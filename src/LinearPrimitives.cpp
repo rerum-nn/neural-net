@@ -69,4 +69,4 @@ WeightMatrix operator+(const WeightMatrix& first, const WeightMatrix& second) {
     return res;
 }
 
-} // namespace neural_net
+}  // namespace neural_net

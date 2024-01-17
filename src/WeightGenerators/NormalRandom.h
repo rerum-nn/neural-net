@@ -16,4 +16,3 @@ private:
 };
 
 }  // namespace neural_net
-

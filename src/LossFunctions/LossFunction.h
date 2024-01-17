@@ -11,4 +11,4 @@ public:
     virtual DataVector LossGradient(const DataVector& present, const DataVector& expected) = 0;
 };
 
-}
+}  // namespace neural_net

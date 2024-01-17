@@ -8,10 +8,12 @@ namespace neural_net {
 Network::Network(std::initializer_list<size_t> layer_sizes,
                  std::initializer_list<ActivationFunction> functions) {
     if (layer_sizes.size() < 2) {
-        throw std::invalid_argument("there should be at least two layers in a network: input and output");
+        throw std::invalid_argument(
+            "there should be at least two layers in a network: input and output");
     }
     if (layer_sizes.size() - 1 != functions.size()) {
-        throw std::invalid_argument("sizes of list of sizes and list of activation functions are not equal");
+        throw std::invalid_argument(
+            "sizes of list of sizes and list of activation functions are not equal");
     }
 
     layers_.reserve(layer_sizes.size() - 1);

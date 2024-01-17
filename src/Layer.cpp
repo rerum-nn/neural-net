@@ -9,8 +9,7 @@ Layer::Layer(size_t input, size_t output, ActivationFunction func, RandomGenerat
       bias_(output, 0),
       activation_func_(std::move(func)) {
     std::for_each(weights_.begin(), weights_.end(), [&generator](std::vector<double>& line) {
-        std::for_each(line.begin(), line.end(),
-                      [&generator](double& d) { d = generator->Next(); });
+        std::for_each(line.begin(), line.end(), [&generator](double& d) { d = generator->Next(); });
     });
     std::for_each(bias_.begin(), bias_.end(), [&generator](double& d) { d = generator->Next(); });
 }

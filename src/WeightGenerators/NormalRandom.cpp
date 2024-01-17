@@ -2,7 +2,7 @@
 
 namespace neural_net {
 NormalRandom::NormalRandom(double mean, double stddev, unsigned long seed)
-    : dre_(seed), nd_(mean, stddev){
+    : dre_(seed), nd_(mean, stddev) {
 }
 double NormalRandom::Next() {
     return nd_(dre_);

@@ -18,4 +18,4 @@ DataVector operator*(const DataVector& data_vector, const WeightMatrix& weight_m
 WeightMatrix operator+(const WeightMatrix& first, const WeightMatrix& second);
 WeightMatrix& operator+=(WeightMatrix& first, const WeightMatrix& second);
 
-} // namespace neural_net
+}  // namespace neural_net

@@ -8,10 +8,10 @@ namespace neural_net {
 class RandomGenerator {
 private:
     class RandomConcept;
+
 public:
     template <typename RandomT>
-    RandomGenerator(RandomT rnd)
-        : object_(std::make_unique<RandomModel<RandomT>>(std::move(rnd))) {
+    RandomGenerator(RandomT rnd) : object_(std::make_unique<RandomModel<RandomT>>(std::move(rnd))) {
     }
 
     const RandomConcept* operator->() const {
