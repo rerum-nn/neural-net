@@ -13,3 +13,5 @@ set(NEURAL_NET
         src/LinearPrimitives.cpp)
 
 add_library(NeuralNet ${NEURAL_NET})
+
+target_include_directories(NeuralNet PRIVATE "eigen")
