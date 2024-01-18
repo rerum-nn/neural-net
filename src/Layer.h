@@ -2,24 +2,22 @@
 
 #include <functional>
 #include <memory>
+#include <random>
 
 #include "ActivationFunctions/ActivationFunction.h"
 #include "LinearPrimitives.h"
-#include "WeightGenerators/NormalRandom.h"
-#include "WeightGenerators/RandomGenerator.h"
 
 namespace neural_net {
 class Layer {
 public:
-    Layer(size_t input, size_t output, ActivationFunction func,
-          RandomGenerator&& generator = NormalRandom());
+    Layer(size_t input, size_t output, ActivationFunction func);
 
-    DataVector Forward(const DataVector& input_vector) const;
-    void Forward(DataVector* input_vector) const;
+    void NormalRandomInit(int seed = std::random_device()());
+    void Forward(Vector* input_vector) const;
 
 private:
-    WeightMatrix weights_;
-    DataVector bias_;
+    Matrix weights_;
+    Vector bias_;
 
     ActivationFunction activation_func_;
 };

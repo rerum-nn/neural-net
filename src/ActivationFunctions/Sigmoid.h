@@ -6,8 +6,8 @@ namespace neural_net {
 
 class Sigmoid {
 public:
-    void Apply(DataVector* data_vector) const;
-    WeightMatrix Derivative(const DataVector& values) const;
+    void Apply(Vector* data_vector) const;
+    Matrix Derivative(const Vector& values) const;
 };
 
 }  // namespace neural_net

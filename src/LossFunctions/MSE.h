@@ -7,8 +7,8 @@ namespace neural_net {
 
 class MSE : LossFunction {
 public:
-    double Loss(const DataVector& present, const DataVector& expected) override;
-    DataVector LossGradient(const DataVector& present, const DataVector& expected) override;
+    double Loss(const Vector& present, const Vector& expected) override;
+    Vector LossGradient(const Vector& present, const Vector& expected) override;
 };
 
 }  // namespace neural_net

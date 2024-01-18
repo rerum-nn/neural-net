@@ -29,10 +29,20 @@ Network::Network(std::initializer_list<size_t> layer_sizes,
         ++activation_function_it;
     }
 }
-DataVector Network::Predict(const DataVector& input_data) {
-    DataVector res = input_data;
+Vector Network::Predict(const Vector& input_data) {
+    Vector res(input_data);
 
-    for (const Layer& layer : layers_) {
+    for (Layer& layer : layers_) {
+        layer.NormalRandomInit();
+        layer.Forward(&res);
+    }
+
+    return res;
+}
+Vector Network::Predict(const std::initializer_list<double>& input_data) {
+    Vector res({input_data});
+
+    for (Layer& layer : layers_) {
         layer.Forward(&res);
     }
 

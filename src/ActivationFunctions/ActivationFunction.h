@@ -34,8 +34,8 @@ private:
     public:
         virtual ~ActivationConcept() = default;
 
-        virtual void Apply(DataVector* data_vector) const = 0;
-        virtual WeightMatrix Derivative(const DataVector& values) const = 0;
+        virtual void Apply(Vector* data_vector) const = 0;
+        virtual Matrix Derivative(const Vector& values) const = 0;
         virtual std::unique_ptr<ActivationConcept> Clone() const = 0;
     };
 
@@ -45,10 +45,10 @@ private:
         ActivationModel(ActivationT func) : func_(std::move(func)) {
         }
 
-        void Apply(DataVector* data_vector) const override {
+        void Apply(Vector* data_vector) const override {
             func_.Apply(data_vector);
         }
-        WeightMatrix Derivative(const DataVector& values) const override {
+        Matrix Derivative(const Vector& values) const override {
             return func_.Derivative(values);
         }
         std::unique_ptr<ActivationConcept> Clone() const override {

@@ -7,8 +7,8 @@ namespace neural_net {
 // TODO: rewrite to Type Erasure idiom
 class LossFunction {
 public:
-    virtual double Loss(const DataVector& present, const DataVector& expected) = 0;
-    virtual DataVector LossGradient(const DataVector& present, const DataVector& expected) = 0;
+    virtual double Loss(const Vector& present, const Vector& expected) = 0;
+    virtual Vector LossGradient(const Vector& present, const Vector& expected) = 0;
 };
 
 }  // namespace neural_net

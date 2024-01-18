@@ -4,7 +4,7 @@
 #include <cassert>
 
 namespace neural_net {
-double MSE::Loss(const DataVector& present, const DataVector& expected) {
+double MSE::Loss(const Vector& present, const Vector& expected) {
     assert(present.size() == expected.size() && "present and expected sizes must be the same");
     double res = 0;
     auto present_it = present.begin();
@@ -15,9 +15,9 @@ double MSE::Loss(const DataVector& present, const DataVector& expected) {
 
     return res / present.size();
 }
-DataVector MSE::LossGradient(const DataVector& present, const DataVector& expected) {
+Vector MSE::LossGradient(const Vector& present, const Vector& expected) {
     assert(present.size() == expected.size() && "present and expected sizes must be the same");
-    DataVector nabla(present.size());
+    Vector nabla(present.size());
 
     std::transform(present.begin(), present.end(), expected.begin(), nabla.begin(),
                    [](double d1, double d2) { return d2 - d1; });

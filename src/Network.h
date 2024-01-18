@@ -15,7 +15,8 @@ public:
     Network(std::initializer_list<size_t> layer_sizes,
             std::initializer_list<ActivationFunction> functions);
 
-    DataVector Predict(const DataVector& input_data);
+    Vector Predict(const Vector& input_data);
+    Vector Predict(const std::initializer_list<double>& input_data);
 
 private:
     std::vector<Layer> layers_;
