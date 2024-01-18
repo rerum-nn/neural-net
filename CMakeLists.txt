@@ -8,10 +8,9 @@ set(NEURAL_NET
         src/Layer.cpp
         src/Network.cpp
         src/ActivationFunctions/Sigmoid.cpp
-        src/WeightGenerators/NormalRandom.cpp
-        src/LossFunctions/MSE.cpp
-        src/LinearPrimitives.cpp)
+        src/LossFunctions/MSE.cpp)
 
 add_library(NeuralNet ${NEURAL_NET})
 
 target_include_directories(NeuralNet PRIVATE "eigen")
+target_include_directories(NeuralNet PRIVATE "EigenRand")
