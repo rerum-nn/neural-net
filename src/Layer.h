@@ -10,9 +10,8 @@ namespace neural_net {
 
 class Layer {
 public:
-    Layer(size_t input, size_t output, ActivationFunction func);
+    Layer(Index input, Index output, ActivationFunction func);
 
-    void NormalRandomInit(int seed = std::random_device()());
     Vector Forward(const Vector& input_vector) const;
 
 private:
