@@ -1,7 +1,6 @@
 # IDE dirs
 .idea/
 cmake-*/
-tests/
 
 # Prerequisites
 *.d
