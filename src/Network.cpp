@@ -7,14 +7,8 @@ namespace neural_net {
 
 Network::Network(std::initializer_list<size_t> layer_sizes,
                  std::initializer_list<ActivationFunction> functions) {
-    if (layer_sizes.size() < 2) {
-        throw std::invalid_argument(
-            "there should be at least two layers in a network: input and output");
-    }
-    if (layer_sizes.size() - 1 != functions.size()) {
-        throw std::invalid_argument(
-            "sizes of list of sizes and list of activation functions are not equal");
-    }
+    assert(layer_sizes.size() >= 2 && "there should be at least two layers in a network: input and output");
+    assert(layer_sizes.size() - 1 == functions.size() && "sizes of list of sizes and list of activation functions are not equal");
 
     layers_.reserve(layer_sizes.size() - 1);
     auto input_size_it = layer_sizes.begin();
@@ -29,24 +23,15 @@ Network::Network(std::initializer_list<size_t> layer_sizes,
         ++activation_function_it;
     }
 }
+
 Vector Network::Predict(const Vector& input_data) {
-    Vector res(input_data);
+    Vector iteration = input_data;
 
-    for (Layer& layer : layers_) {
-        layer.NormalRandomInit();
-        layer.Forward(&res);
+    for (const Layer& layer : layers_) {
+        iteration = layer.Forward(iteration);
     }
 
-    return res;
-}
-Vector Network::Predict(const std::initializer_list<double>& input_data) {
-    Vector res({input_data});
-
-    for (Layer& layer : layers_) {
-        layer.Forward(&res);
-    }
-
-    return res;
+    return iteration;
 }
 
 }  // namespace neural_net

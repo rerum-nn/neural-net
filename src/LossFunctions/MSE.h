@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../LinearPrimitives.h"
+#include "../Types.h"
 #include "LossFunction.h"
 
 namespace neural_net {

@@ -4,6 +4,7 @@
 #include <cassert>
 
 namespace neural_net {
+
 double MSE::Loss(const Vector& present, const Vector& expected) {
     assert(present.size() == expected.size() && "present and expected sizes must be the same");
     double res = 0;
@@ -15,6 +16,7 @@ double MSE::Loss(const Vector& present, const Vector& expected) {
 
     return res / present.size();
 }
+
 Vector MSE::LossGradient(const Vector& present, const Vector& expected) {
     assert(present.size() == expected.size() && "present and expected sizes must be the same");
     Vector nabla(present.size());
@@ -24,4 +26,5 @@ Vector MSE::LossGradient(const Vector& present, const Vector& expected) {
 
     return nabla;
 }
+
 }  // namespace neural_net

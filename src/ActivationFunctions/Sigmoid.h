@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../LinearPrimitives.h"
+#include "../Types.h"
 
 namespace neural_net {
 
 class Sigmoid {
 public:
-    void Apply(Vector* data_vector) const;
+    Vector Apply(const Vector& data_vector) const;
     Matrix Derivative(const Vector& values) const;
 };
 

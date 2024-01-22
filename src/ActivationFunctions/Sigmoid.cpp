@@ -6,17 +6,20 @@
 
 namespace neural_net {
 
-void Sigmoid::Apply(Vector* data_vector) const {
-    assert(data_vector && "data_vector can't be nullptr");
-    std::for_each(data_vector->begin(), data_vector->end(),
-                  [](double& d) { d = 1. / (1. + std::exp(-d)); });
+Vector Sigmoid::Apply(const Vector& data_vector) const {
+    Vector res(data_vector.size());
+    std::transform(data_vector.begin(), data_vector.end(), res.begin(),
+                   [](double d) { return 1. / (1. + std::exp(-d)); });
+    return res;
 }
+
 Matrix Sigmoid::Derivative(const Vector& values) const {
-    Matrix jacobian(values.size(), values.size());
-    for (size_t i = 0; i < values.size(); ++i) {
-        double sigmoid = 1. / (1. + std::exp(-values[i]));
-        jacobian(i, i) = sigmoid * (1 - sigmoid);
-    }
-    return jacobian;
+    Vector derivative_vector(values.size());
+    std::transform(values.begin(), values.end(), derivative_vector.begin(), [](double d) {
+        double sigmoid = 1. / (1. + std::exp(-d));
+        return sigmoid * (1 - sigmoid);
+    });
+    return derivative_vector.asDiagonal();
 }
+
 }  // namespace neural_net

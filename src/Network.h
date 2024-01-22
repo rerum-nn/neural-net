@@ -1,12 +1,11 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-
 #include "ActivationFunctions/ActivationFunction.h"
 #include "Layer.h"
-#include "LinearPrimitives.h"
 #include "LossFunctions/LossFunction.h"
+#include "Types.h"
+
+#include <vector>
 
 namespace neural_net {
 
@@ -16,7 +15,6 @@ public:
             std::initializer_list<ActivationFunction> functions);
 
     Vector Predict(const Vector& input_data);
-    Vector Predict(const std::initializer_list<double>& input_data);
 
 private:
     std::vector<Layer> layers_;
