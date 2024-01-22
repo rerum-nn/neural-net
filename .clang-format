@@ -7,5 +7,14 @@ AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 DerivePointerAlignment: true
 KeepEmptyLinesAtTheStartOfBlocks: true
-SortIncludes: true
+SortIncludes: CaseInsensitive
 SeparateDefinitionBlocks: Always
+
+IncludeCategories:
+  - Regex:           '^<.*(/|\\).*'
+    Priority:        2
+  - Regex:           '^".*'
+    Priority:        1
+  - Regex:           '^<.*'
+    Priority:        3
+
