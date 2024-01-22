@@ -9,7 +9,9 @@ set(NEURAL_NET
         src/Layer.cpp
         src/Network.cpp
         src/ActivationFunctions/Sigmoid.cpp
-        src/LossFunctions/MSE.cpp)
+        src/LossFunctions/MSE.cpp
+        src/Random.cpp
+        src/Random.h)
 set(INCLUDE_DIRECTORIES eigen EigenRand)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
