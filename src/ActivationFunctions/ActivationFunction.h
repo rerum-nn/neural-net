@@ -19,6 +19,7 @@ public:
     ActivationFunction(const ActivationFunction& other)
         : object_(other ? other.object_->Clone() : nullptr) {
     }
+
     ActivationFunction& operator=(const ActivationFunction& other) {
         return *this = ActivationFunction(other);
     }
@@ -57,20 +58,23 @@ private:
     public:
         ActivationModel(const ActivationT& func) : func_(func) {
         }
+
         ActivationModel(ActivationT&& func) : func_(std::move(func)) {
         }
 
         Vector Apply(const Vector& data_vector) const override {
             return func_.Apply(data_vector);
         }
+
         Matrix Derivative(const Vector& values) const override {
             return func_.Derivative(values);
         }
+
+    private:
         std::unique_ptr<ActivationConcept> Clone() const override {
             return std::make_unique<ActivationModel>(func_);
         }
 
-    private:
         ActivationT func_;
     };
 
