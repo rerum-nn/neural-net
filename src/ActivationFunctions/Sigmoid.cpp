@@ -1,7 +1,6 @@
 #include "Sigmoid.h"
 
 #include <algorithm>
-#include <cassert>
 #include <cmath>
 
 namespace neural_net {

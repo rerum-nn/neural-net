@@ -1,7 +1,6 @@
 #include "Network.h"
 
 #include <cassert>
-#include <stdexcept>
 
 namespace neural_net {
 

@@ -3,6 +3,7 @@
 #include "Types.h"
 
 #include <EigenRand/EigenRand>
+
 #include <random>
 
 namespace neural_net {
@@ -22,4 +23,3 @@ private:
 };
 
 }  // namespace neural_net
-

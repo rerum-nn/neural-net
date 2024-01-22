@@ -3,9 +3,6 @@
 #include "ActivationFunctions/ActivationFunction.h"
 #include "Types.h"
 
-#include <functional>
-#include <random>
-
 namespace neural_net {
 
 class Layer {
