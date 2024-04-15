@@ -1,16 +1,15 @@
-#include "../src/ActivationFunctions/Sigmoid.h"
+#include "../src/Layers/Sigmoid.h"
 #include "../src/Network.h"
 #include "../src/Types.h"
+#include "../src/Layers/Linear.h"
 
 #include <iostream>
 #include <gtest/gtest.h>
 
-using neural_net::Network;
-using neural_net::Sigmoid;
-using neural_net::Vector;
+using namespace neural_net;
 
 TEST(GeneralWork, NoThrowPredict) {
-    Network network({4, 9, 5}, {Sigmoid(), Sigmoid()});
+    Network network({Linear(4, 9), Sigmoid(), Linear(9, 5), Sigmoid()});
     Vector vector(4);
     vector << 4, 5, 3, 1;
     Vector res;

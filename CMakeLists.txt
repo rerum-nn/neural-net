@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(NEURAL_NET
-        src/Layer.cpp
+        src/Layers/Linear.cpp
         src/Network.cpp
-        src/ActivationFunctions/Sigmoid.cpp
+        src/Layers/Sigmoid.cpp
         src/LossFunctions/MSE.cpp
         src/Random.cpp
         src/Random.h)

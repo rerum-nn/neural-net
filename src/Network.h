@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ActivationFunctions/ActivationFunction.h"
-#include "Layer.h"
+#include "FitParameters.h"
+#include "Layers/Layer.h"
 #include "LossFunctions/LossFunction.h"
 #include "Types.h"
 
@@ -11,10 +11,11 @@ namespace neural_net {
 
 class Network {
 public:
-    Network(std::initializer_list<size_t> layer_sizes,
-            std::initializer_list<ActivationFunction> functions);
+    Network(std::initializer_list<Layer> layers);
 
-    Vector Predict(const Vector& input_data);
+    void Fit(const Matrix& input_data, const Matrix& expected_answers,
+             const FitParameters& fit_parameters = {});
+    Vector Predict(const Vector& input_vector);
 
 private:
     std::vector<Layer> layers_;

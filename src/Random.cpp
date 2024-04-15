@@ -10,12 +10,12 @@ Random& Random::Instance(int seed) {
     return instance;
 }
 
-Matrix Random::Normal(Index rows, Index columns) {
-    return Instance().NormalImpl(rows, columns);
+Matrix Random::Normal(Index rows, Index cols) {
+    return Instance().NormalImpl(rows, cols);
 }
 
-Matrix Random::NormalImpl(Index rows, Index columns) {
-    return Eigen::Rand::normal<Matrix>(rows, columns, generator_);
+Matrix Random::NormalImpl(Index rows, Index cols) {
+    return Eigen::Rand::normal<Matrix>(rows, cols, generator_);
 }
 
 }  // namespace neural_net

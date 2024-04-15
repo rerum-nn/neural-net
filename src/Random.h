@@ -12,12 +12,12 @@ class Random {
 public:
     static Random& Instance(int seed = std::random_device()());
 
-    static Matrix Normal(Index rows, Index columns);
+    static Matrix Normal(Index rows, Index cols);
 
 private:
     Random(int seed);
 
-    Matrix NormalImpl(Index rows, Index columns);
+    Matrix NormalImpl(Index rows, Index cols);
 
     Eigen::Rand::P8_mt19937_64 generator_;
 };
