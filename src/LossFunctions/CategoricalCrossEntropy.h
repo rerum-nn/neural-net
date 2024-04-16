@@ -4,7 +4,7 @@
 
 namespace neural_net {
 
-class BinaryCrossEntropy {
+class CategoricalCrossEntropy {
 public:
     double Loss(const Vector& present, const Vector& expected) const;
     RowVector LossGradient(const Vector& present, const Vector& expected) const;

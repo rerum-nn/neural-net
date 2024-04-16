@@ -5,10 +5,10 @@
 
 namespace neural_net {
 
-Vector MSE::Loss(const Vector& present, const Vector& expected) const {
+double MSE::Loss(const Vector& present, const Vector& expected) const {
     assert(present.size() == expected.size() && "present and expected sizes must be the same");
-    Vector diff = expected - present;
-    return diff.cwiseProduct(diff);
+    double norm = (expected - present).norm();
+    return norm * norm;
 }
 
 RowVector MSE::LossGradient(const Vector& present, const Vector& expected) const {

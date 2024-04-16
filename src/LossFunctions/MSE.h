@@ -6,7 +6,7 @@ namespace neural_net {
 
 class MSE {
 public:
-    Vector Loss(const Vector& present, const Vector& expected) const;
+    double Loss(const Vector& present, const Vector& expected) const;
     RowVector LossGradient(const Vector& present, const Vector& expected) const;
 };
 
