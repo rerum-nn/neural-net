@@ -11,7 +11,8 @@ set(NEURAL_NET
         src/Layers/Sigmoid.cpp
         src/LossFunctions/MSE.cpp
         src/Random.cpp
-        src/Random.h)
+        src/Optimizers/SGD.cpp
+        src/LossFunctions/BinaryCrossEntropy.cpp)
 set(INCLUDE_DIRECTORIES eigen EigenRand)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 

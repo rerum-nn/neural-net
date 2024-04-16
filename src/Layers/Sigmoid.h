@@ -7,7 +7,8 @@ namespace neural_net {
 class Sigmoid {
 public:
     Vector Apply(const Vector& input_vector);
-    RowVector Fit(const RowVector& loss);
+    std::vector<ParametersGrad> GetGradients(const RowVector& loss);
+    RowVector BackPropagation(const RowVector& loss) const;
 
 private:
     Vector input_vector_;

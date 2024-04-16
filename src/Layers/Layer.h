@@ -43,7 +43,8 @@ private:
     class LayerConcept {
     public:
         virtual Vector Apply(const Vector& data_vector) = 0;
-        virtual RowVector Fit(const RowVector& values) = 0;
+        virtual std::vector<ParametersGrad> GetGradients(const RowVector& loss) = 0;
+        virtual RowVector BackPropagation(const RowVector& loss) const = 0;
 
         virtual ~LayerConcept() = default;
 
@@ -66,8 +67,12 @@ private:
             return layer_.Apply(data_vector);
         }
 
-        RowVector Fit(const RowVector& values) override {
-            return layer_.Fit(values);
+        std::vector<ParametersGrad> GetGradients(const RowVector& loss) override {
+            return layer_.GetGradients(loss);
+        }
+
+        virtual RowVector BackPropagation(const RowVector& loss) const override {
+            return layer_.BackPropagation(loss);
         }
 
     private:

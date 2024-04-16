@@ -7,8 +7,7 @@
 namespace neural_net {
 
 Network::Network(std::initializer_list<Layer> layers) : layers_(layers) {
-    assert(layers.size() >= 1 &&
-           "there should be at least one layer in a network");
+    assert(layers.size() >= 1 && "there should be at least one layer in a network");
 }
 
 Vector Network::Predict(const Vector& input_vector) {
@@ -21,20 +20,28 @@ Vector Network::Predict(const Vector& input_vector) {
     return iteration;
 }
 
-void Network::Fit(const Matrix& input_data, const Matrix& expected_answers,
-                  const FitParameters& fit_parameters) {
-    for (size_t epoch = 1; epoch <= fit_parameters.max_epoch; ++epoch) {
-        for (Index batch = 0; batch < input_data.rows(); ++batch) {
-            Vector iteration = Predict(input_data.row(batch));
+void Network::Fit(const Matrix& input_data, const Matrix& labels, const LossFunction& loss,
+                  Optimizer&& optimizer) {
+    for (Index batch = 0; batch < input_data.cols(); ++batch) {
+        Vector label = labels.col(batch);
+        Vector output = Predict(input_data.col(batch));
 
-            RowVector nabla =
-                fit_parameters.learning_rate *
-                fit_parameters.loss_function->LossGradient(iteration, expected_answers);
-            for (Layer& layer : std::ranges::reverse_view(layers_)) {
-                nabla = layer->Fit(nabla);
-            }
+        RowVector nabla = loss->LossGradient(output, label);
+        for (Layer& layer : std::ranges::reverse_view(layers_)) {
+            optimizer->Optimize(layer->GetGradients(nabla));
+            nabla = layer->BackPropagation(nabla);
         }
     }
+}
+
+Network& Network::AddLayer(const Layer& layer) {
+    layers_.push_back(layer);
+    return *this;
+}
+
+Network& Network::AddLayer(Layer&& layer) {
+    layers_.push_back(std::move(layer));
+    return *this;
 }
 
 }  // namespace neural_net

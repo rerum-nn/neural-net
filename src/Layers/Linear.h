@@ -2,18 +2,22 @@
 
 #include "../Types.h"
 
+#include <vector>
+
 namespace neural_net {
 
 class Linear {
 public:
     Linear(Index input, Index output);
+    Linear(Matrix weights, Vector bias);
 
     Vector Apply(const Vector& input_vector);
-    RowVector Fit(const RowVector& loss);
+    std::vector<ParametersGrad> GetGradients(const RowVector& loss);
+    RowVector BackPropagation(const RowVector& loss) const;
 
 private:
     Matrix weights_;
-    Vector bias_;
+    Matrix bias_;
 
     Vector input_vector_;
 };

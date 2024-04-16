@@ -11,4 +11,9 @@ using RowVector = Eigen::RowVectorXd;
 using Matrix = Eigen::MatrixXd;
 using Index = Eigen::Index;
 
+struct ParametersGrad {
+    Matrix & param;
+    Matrix grad;
+};
+
 }  // namespace neural_net
