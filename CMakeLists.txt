@@ -12,7 +12,12 @@ set(NEURAL_NET
         src/LossFunctions/MSE.cpp
         src/Random.cpp
         src/Optimizers/SGD.cpp
-        src/LossFunctions/BinaryCrossEntropy.cpp)
+        src/LossFunctions/BinaryCrossEntropy.cpp
+        src/Metrics/Metrics.h
+        src/Layers/Softmax.cpp
+        src/Layers/Softmax.h
+        src/LossFunctions/CategoricalCrossEntropy.cpp
+        src/LossFunctions/CategoricalCrossEntropy.h)
 set(INCLUDE_DIRECTORIES eigen EigenRand)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 

@@ -1,15 +1,17 @@
-#include "../src/Layers/Sigmoid.h"
-#include "../src/Network.h"
-#include "../src/LossFunctions/BinaryCrossEntropy.h"
-#include "../src/Types.h"
 #include "../src/Layers/Linear.h"
+#include "../src/Layers/Sigmoid.h"
+#include "../src/Layers/Softmax.h"
+#include "../src/LossFunctions/BinaryCrossEntropy.h"
+#include "../src/Network.h"
+#include "../src/Types.h"
+
+#include <gtest/gtest.h>
 
 #include <iostream>
-#include <gtest/gtest.h>
 
 using namespace neural_net;
 
-TEST(GeneralWork, NoThrowPredict) {
+TEST(Models, XOR) {
     Network network({Linear(2, 2), Sigmoid(), Linear(2, 1), Sigmoid()});
     Matrix train_data{
         {0, 1, 0, 1},
@@ -32,8 +34,13 @@ TEST(GeneralWork, NoThrowPredict) {
     }
 }
 
-int main() {
-  testing::InitGoogleTest();
-
-  return RUN_ALL_TESTS();
+TEST(CheckLayers, Softmax) {
+    Network network({Softmax()});
+    Vector data{
+        {1000, 2000, 3000}
+    };
+    Vector ans = network.Predict(data);
+    for (Index i = 0; i < ans.rows(); ++i) {
+        std::cout << i << ": " << ans[i] << std::endl;
+    }
 }
