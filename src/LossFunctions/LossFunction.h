@@ -45,6 +45,7 @@ private:
         virtual RowVector LossGradient(const Vector& present, const Vector& expected) const = 0;
 
         virtual ~LossConcept() = default;
+
     private:
         virtual std::unique_ptr<LossConcept> Clone() const = 0;
         friend class LossFunction;

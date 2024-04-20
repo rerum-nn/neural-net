@@ -7,6 +7,7 @@ public:
     Vector Apply(const Vector& input_vector);
     std::vector<ParametersGrad> GetGradients(const RowVector& loss);
     RowVector BackPropagation(const RowVector& loss) const;
+
 private:
     Vector exp_vector_;
 };

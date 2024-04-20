@@ -25,4 +25,4 @@ Optimizer Optimizers::Adam(double lr, double beta_1, double beta_2) {
     return neural_net::Adam(lr, beta_1, beta_2);
 }
 
-}
+}  // namespace neural_net

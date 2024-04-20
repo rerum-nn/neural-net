@@ -16,8 +16,7 @@ public:
         : object_(std::make_unique<LayerModel<LayerT>>(std::forward<LayerT>(layer))) {
     }
 
-    Layer(const Layer& other)
-        : object_(other ? other.object_->Clone() : nullptr) {
+    Layer(const Layer& other) : object_(other ? other.object_->Clone() : nullptr) {
     }
 
     Layer& operator=(const Layer& other) {

@@ -16,6 +16,7 @@ Vector Sigmoid::Apply(const Vector& input_vector) {
 std::vector<ParametersGrad> Sigmoid::GetGradients(const RowVector& loss) {
     return {};
 }
+
 RowVector Sigmoid::BackPropagation(const RowVector& loss) const {
     Vector derivative_vector(input_vector_.size());
     std::transform(input_vector_.begin(), input_vector_.end(), derivative_vector.begin(),

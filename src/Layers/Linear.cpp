@@ -5,8 +5,7 @@
 namespace neural_net {
 
 Linear::Linear(Index input, Index output)
-    : weights_(Random::Normal(output, input)),
-      bias_(Random::Normal(output, 1)) {
+    : weights_(Random::Normal(output, input)), bias_(Random::Normal(output, 1)) {
     assert(input > 0 && "input size of layer should be positive");
     assert(output > 0 && "output size of layer should be positive");
 }
@@ -24,8 +23,7 @@ Vector Linear::Apply(const Vector& input_vector) {
 }
 
 std::vector<ParametersGrad> Linear::GetGradients(const RowVector& loss) {
-    assert(input_vector_.size() > 0 &&
-           "input_vector for fit information hasn't been transferred");
+    assert(input_vector_.size() > 0 && "input_vector for fit information hasn't been transferred");
     Matrix weights_delta = (input_vector_ * loss).transpose();
     Matrix bias_delta = loss.transpose();
     std::vector<ParametersGrad> gradients{{weights_, weights_delta}, {bias_, bias_delta}};

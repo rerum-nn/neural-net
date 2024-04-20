@@ -9,7 +9,8 @@
 
 namespace neural_net {
 
-using Optimizer = std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&, size_t)>;
+using Optimizer =
+    std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&, size_t)>;
 
 class Optimizers {
 public:
@@ -94,16 +95,17 @@ public:
 //     std::unique_ptr<OptimizerConcept> object_;
 // };
 
-//class Optimizer {
-//public:
+// class Optimizer {
+// public:
 //
 //
-//private:
-//    Optimizer(
-//        std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&, size_t)>);
+// private:
+//     Optimizer(
+//         std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&,
+//         size_t)>);
 //
-//    std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&, size_t)>
-//        optimize_;
-//};
+//     std::function<void(Network&, const Matrix&, const Matrix&, const LossFunction&, size_t)>
+//         optimize_;
+// };
 
 }  // namespace neural_net
