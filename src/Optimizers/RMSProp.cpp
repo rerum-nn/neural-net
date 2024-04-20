@@ -1,13 +1,11 @@
-#include "SGD.h"
-
-#include <ranges>
+#include "RMSProp.h"
 
 namespace neural_net {
-SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
+RMSProp::RMSProp(double lr, double rho) : learning_rate_(lr), rho_(rho) {
 }
 
-void SGD::operator()(Network& network, const Matrix& input_data, const Matrix& labels,
-                     const LossFunction& loss, size_t max_epoch) const {
+void RMSProp::operator()(Network& network, const Matrix& input_data, const Matrix& labels,
+                         const LossFunction& loss, size_t max_epoch) const {
     std::vector<Layer>& layers = network.GetLayers();
 
     std::vector<std::vector<Matrix>> old_grad(layers.size());
@@ -28,13 +26,14 @@ void SGD::operator()(Network& network, const Matrix& input_data, const Matrix& l
     }
 }
 
-void SGD::UpdateParameter(const std::vector<ParametersGrad>& pack,
-                          std::vector<Matrix>& old_grad) const {
+void RMSProp::UpdateParameter(const std::vector<ParametersGrad>& pack,
+                              std::vector<Matrix>& old_grad) const {
     if (old_grad.empty()) {
         for (size_t i = 0; i < pack.size(); ++i) {
             const ParametersGrad& param = pack[i];
-            Matrix delta = param.grad * learning_rate_;
-            param.param -= delta;
+            Matrix delta = (1 - rho_) * param.grad.cwiseProduct(param.grad);
+            param.param -=
+                learning_rate_ * (param.grad.array() / (delta.array().sqrt() + kEpsilon)).matrix();
             old_grad.push_back(delta);
         }
         return;
@@ -43,10 +42,10 @@ void SGD::UpdateParameter(const std::vector<ParametersGrad>& pack,
     assert(pack.size() == old_grad.size());
     for (size_t i = 0; i < pack.size(); ++i) {
         const ParametersGrad& param = pack[i];
-        Matrix delta = old_grad[i] * moment_ + param.grad * learning_rate_;
-        param.param -= delta;
+        Matrix delta = rho_ * old_grad[i] + (1 - rho_) * param.grad.cwiseProduct(param.grad);
+        param.param -=
+            learning_rate_ * (param.grad.array() / (delta.array().sqrt() + kEpsilon)).matrix();
         old_grad[i] = delta;
     }
 }
-
 }  // namespace neural_net

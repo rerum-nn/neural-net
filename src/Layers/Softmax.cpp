@@ -2,6 +2,7 @@
 
 namespace neural_net {
 Vector Softmax::Apply(const Vector& input_vector) {
+    assert(input_vector.size() > 0);
     double mx = input_vector.maxCoeff();
     Vector transformed = (input_vector.array() - mx).array().exp();
     exp_vector_ = transformed / transformed.sum();
