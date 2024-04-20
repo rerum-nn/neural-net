@@ -14,14 +14,14 @@ using namespace neural_net;
 
 TEST(Models, XOR) {
     Sequential network({Linear(2, 2), Sigmoid(), Linear(2, 1), Sigmoid()});
-    Matrix train_data{{0, 1, 0, 1}, {0, 0, 1, 1}};
-    Matrix labels{{0, 1, 1, 0}};
+    Matrix train_data{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    Matrix labels{{0}, {1}, {1}, {0}};
 
-    Optimizer adam = Optimizers::Adam(0.3);
-    adam(network, train_data, labels, BinaryCrossEntropy(), 1000);
+    Optimizer sgd = Optimizers::SGD(0.1);
+    sgd(network, train_data, labels, BinaryCrossEntropy(), 10000);
     for (Index i = 0; i < 4; ++i) {
-        Vector vector = train_data.col(i);
-        Vector res;
+        RowVector vector = train_data.row(i);
+        RowVector res;
         ASSERT_NO_THROW(res = network.Predict(vector));
         std::cout << "res:" << std::endl;
         for (size_t j = 0; j < res.size(); ++j) {

@@ -1,5 +1,7 @@
 #include "Adam.h"
 
+#include <iostream>
+
 namespace neural_net {
 Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
     : learning_rate_(lr),
@@ -22,11 +24,11 @@ void Adam::operator()(Sequential& network, const Matrix& input_data, const Matri
     }
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        for (Index batch = 0; batch < input_data.cols(); ++batch) {
-            Vector label = labels.col(batch);
-            Vector output = network.Predict(input_data.col(batch));
+        for (Index batch = 0; batch < input_data.rows(); ++batch) {
+            Matrix label = labels.row(batch);
+            Matrix output = network.Predict(input_data.row(batch));
 
-            RowVector nabla = loss->LossGradient(output, label);
+            Matrix nabla = loss->LossGradient(output, label);
             for (size_t i = 0; i < layers.size(); ++i) {
                 size_t pos = layers.size() - 1 - i;
                 Layer& layer = layers[pos];
@@ -37,7 +39,10 @@ void Adam::operator()(Sequential& network, const Matrix& input_data, const Matri
             cur_beta_1 *= beta_1_;
             cur_beta_2 *= beta_2_;
         }
+        std::cout << "\rEpoch [" << epoch << "/" << max_epoch
+                  << "] Error: " << loss->Loss(network.Predict(input_data), labels);
     }
+    std::cout << std::endl;
 }
 
 void Adam::UpdateParameter(const std::vector<ParametersGrad>& pack,

@@ -11,15 +11,15 @@ public:
     Linear(Index input, Index output);
     Linear(Matrix weights, Vector bias);
 
-    Vector Apply(const Vector& input_vector);
-    std::vector<ParametersGrad> GetGradients(const RowVector& loss);
-    RowVector BackPropagation(const RowVector& loss) const;
+    Matrix Apply(const Matrix& input_data);
+    std::vector<ParametersGrad> GetGradients(const Matrix& loss);
+    Matrix BackPropagation(const Matrix& loss) const;
 
 private:
     Matrix weights_;
     Matrix bias_;
 
-    Matrix input_vector_;
+    Matrix input_data_;
 };
 
 }  // namespace neural_net

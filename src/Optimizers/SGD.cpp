@@ -6,18 +6,18 @@ namespace neural_net {
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
 }
 
-void SGD::operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
+void SGD::operator()(Sequential& sequential, const Matrix& input_data, const Matrix& labels,
                      const LossFunction& loss, size_t max_epoch) const {
-    std::vector<Layer>& layers = network.GetLayers();
+    std::vector<Layer>& layers = sequential.GetLayers();
 
     std::vector<std::vector<Matrix>> old_grad(layers.size());
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        for (Index batch = 0; batch < input_data.cols(); ++batch) {
-            Vector label = labels.col(batch);
-            Vector output = network.Predict(input_data.col(batch));
+        for (Index batch = 0; batch < input_data.rows(); ++batch) {
+            Matrix label = labels.row(batch);
+            Matrix output = sequential.Predict(input_data.row(batch));
 
-            RowVector nabla = loss->LossGradient(output, label);
+            Matrix nabla = loss->LossGradient(output, label);
             for (size_t i = 0; i < layers.size(); ++i) {
                 size_t pos = layers.size() - 1 - i;
                 Layer& layer = layers[pos];

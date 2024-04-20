@@ -10,6 +10,7 @@ using Vector = Eigen::VectorXd;
 using RowVector = Eigen::RowVectorXd;
 using Matrix = Eigen::MatrixXd;
 using Index = Eigen::Index;
+using Array = Eigen::ArrayXXd;
 
 struct ParametersGrad {
     Matrix& param;

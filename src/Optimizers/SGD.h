@@ -12,7 +12,7 @@ class SGD {
 public:
     SGD(double lr = 0.01, double momentum = .0);
 
-    void operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
+    void operator()(Sequential& sequential, const Matrix& input_data, const Matrix& labels,
                     const LossFunction& loss, size_t max_epoch = 10000) const;
 
 private:

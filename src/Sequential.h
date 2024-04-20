@@ -12,7 +12,7 @@ class Sequential {
 public:
     Sequential(std::initializer_list<Layer> layers);
 
-    Vector Predict(const Vector& input_vector);
+    Matrix Predict(const Matrix& input_data);
 
     Sequential& AddLayer(const Layer& layer);
     Sequential& AddLayer(Layer&& layer);

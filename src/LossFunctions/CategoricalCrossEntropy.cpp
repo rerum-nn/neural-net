@@ -1,12 +1,11 @@
 #include "CategoricalCrossEntropy.h"
 
 namespace neural_net {
-double CategoricalCrossEntropy::Loss(const Vector& present, const Vector& expected) const {
-    return -(expected.array() * (present.array() + kEpsilon).log()).sum();
+double CategoricalCrossEntropy::Loss(const Matrix& present, const Matrix& expected) const {
+    return -(expected.array() * (present.array() + kEpsilon).log()).sum() / present.rows();
 }
 
-RowVector CategoricalCrossEntropy::LossGradient(const Vector& present,
-                                                const Vector& expected) const {
-    return -expected.array() / present.array();
+Matrix CategoricalCrossEntropy::LossGradient(const Matrix& present, const Matrix& expected) const {
+    return -expected.array() / present.array() / present.rows();
 }
 }  // namespace neural_net

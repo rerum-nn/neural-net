@@ -41,9 +41,9 @@ public:
 private:
     class LayerConcept {
     public:
-        virtual Vector Apply(const Vector& data_vector) = 0;
-        virtual std::vector<ParametersGrad> GetGradients(const RowVector& loss) = 0;
-        virtual RowVector BackPropagation(const RowVector& loss) const = 0;
+        virtual Matrix Apply(const Matrix& data_vector) = 0;
+        virtual std::vector<ParametersGrad> GetGradients(const Matrix& loss) = 0;
+        virtual Matrix BackPropagation(const Matrix& loss) const = 0;
 
         virtual ~LayerConcept() = default;
 
@@ -62,15 +62,15 @@ private:
         LayerModel(LayerT&& func) : layer_(std::move(func)) {
         }
 
-        Vector Apply(const Vector& data_vector) override {
+        Matrix Apply(const Matrix& data_vector) override {
             return layer_.Apply(data_vector);
         }
 
-        std::vector<ParametersGrad> GetGradients(const RowVector& loss) override {
+        std::vector<ParametersGrad> GetGradients(const Matrix& loss) override {
             return layer_.GetGradients(loss);
         }
 
-        RowVector BackPropagation(const RowVector& loss) const override {
+        Matrix BackPropagation(const Matrix& loss) const override {
             return layer_.BackPropagation(loss);
         }
 

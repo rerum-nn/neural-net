@@ -4,12 +4,12 @@ namespace neural_net {
 
 class Softmax {
 public:
-    Vector Apply(const Vector& input_vector);
-    std::vector<ParametersGrad> GetGradients(const RowVector& loss);
-    RowVector BackPropagation(const RowVector& loss) const;
+    Matrix Apply(const Matrix& input_vector);
+    std::vector<ParametersGrad> GetGradients(const Matrix& loss);
+    Matrix BackPropagation(const Matrix& loss) const;
 
 private:
-    Vector exp_vector_;
+    Matrix exp_data_;
 };
 
 }  // namespace neural_net
