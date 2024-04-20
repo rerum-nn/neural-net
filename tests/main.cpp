@@ -2,8 +2,8 @@
 #include "../src/Layers/Sigmoid.h"
 #include "../src/Layers/Softmax.h"
 #include "../src/LossFunctions/BinaryCrossEntropy.h"
-#include "../src/Network.h"
 #include "../src/Optimizers/Optimizers.h"
+#include "../src/Sequential.h"
 #include "../src/Types.h"
 
 #include <gtest/gtest.h>
@@ -13,12 +13,11 @@
 using namespace neural_net;
 
 TEST(Models, XOR) {
-    Network network({Linear(2, 2), Sigmoid(), Linear(2, 1), Sigmoid()});
+    Sequential network({Linear(2, 2), Sigmoid(), Linear(2, 1), Sigmoid()});
     Matrix train_data{{0, 1, 0, 1}, {0, 0, 1, 1}};
     Matrix labels{{0, 1, 1, 0}};
 
-    Network network2 = network;
-    Optimizer adam = Optimizers::Adam(0.03);
+    Optimizer adam = Optimizers::Adam(0.3);
     adam(network, train_data, labels, BinaryCrossEntropy(), 1000);
     for (Index i = 0; i < 4; ++i) {
         Vector vector = train_data.col(i);
@@ -33,7 +32,7 @@ TEST(Models, XOR) {
 }
 
 TEST(CheckLayers, Softmax) {
-    Network network({Softmax()});
+    Sequential network({Softmax()});
     Vector data{{1000, 2000, 3000}};
     Vector ans = network.Predict(data);
     for (Index i = 0; i < ans.rows(); ++i) {

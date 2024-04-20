@@ -7,17 +7,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(NEURAL_NET
         src/Layers/Linear.cpp
-        src/Network.cpp
+        src/Sequential.cpp
         src/Layers/Sigmoid.cpp
         src/LossFunctions/MSE.cpp
         src/Random.cpp
         src/Optimizers/SGD.cpp
         src/LossFunctions/BinaryCrossEntropy.cpp
-        src/Metrics/Metrics.h
         src/Layers/Softmax.cpp
-        src/Layers/Softmax.h
         src/LossFunctions/CategoricalCrossEntropy.cpp
-        src/LossFunctions/CategoricalCrossEntropy.h)
+        src/Optimizers/Adam.cpp
+        src/Optimizers/Optimizers.cpp)
 set(INCLUDE_DIRECTORIES eigen EigenRand)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
