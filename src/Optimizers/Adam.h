@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../LossFunctions/LossFunction.h"
-#include "../Network.h"
+#include "../Sequential.h"
 #include "../Types.h"
 
 namespace neural_net {
@@ -13,7 +13,7 @@ public:
     Adam(double lr = 0.03, double beta_1 = 0.9, double beta_2 = 0.999,
          FastStart is_fast_start = FastStart::Enable);
 
-    void operator()(Network& network, const Matrix& input_data, const Matrix& labels,
+    void operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
                     const LossFunction& loss, size_t max_epoch = 10000) const;
 
 private:

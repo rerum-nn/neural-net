@@ -8,7 +8,7 @@ Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
       is_fast_start_(is_fast_start == FastStart::Enable) {
 }
 
-void Adam::operator()(Network& network, const Matrix& input_data, const Matrix& labels,
+void Adam::operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
                       const LossFunction& loss, size_t max_epoch) const {
     std::vector<Layer>& layers = network.GetLayers();
 

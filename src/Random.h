@@ -10,7 +10,7 @@ namespace neural_net {
 
 class Random {
 public:
-    static Random& Instance(int seed = std::random_device()());
+    static Random& Instance(int seed = 1337);
 
     static Matrix Normal(Index rows, Index cols);
 

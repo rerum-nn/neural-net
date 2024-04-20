@@ -8,14 +8,14 @@
 
 namespace neural_net {
 
-class Network {
+class Sequential {
 public:
-    Network(std::initializer_list<Layer> layers);
+    Sequential(std::initializer_list<Layer> layers);
 
     Vector Predict(const Vector& input_vector);
 
-    Network& AddLayer(const Layer& layer);
-    Network& AddLayer(Layer&& layer);
+    Sequential& AddLayer(const Layer& layer);
+    Sequential& AddLayer(Layer&& layer);
 
     std::vector<Layer>& GetLayers();
 

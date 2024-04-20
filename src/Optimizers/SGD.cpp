@@ -6,7 +6,7 @@ namespace neural_net {
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
 }
 
-void SGD::operator()(Network& network, const Matrix& input_data, const Matrix& labels,
+void SGD::operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
                      const LossFunction& loss, size_t max_epoch) const {
     std::vector<Layer>& layers = network.GetLayers();
 

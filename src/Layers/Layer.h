@@ -70,7 +70,7 @@ private:
             return layer_.GetGradients(loss);
         }
 
-        virtual RowVector BackPropagation(const RowVector& loss) const override {
+        RowVector BackPropagation(const RowVector& loss) const override {
             return layer_.BackPropagation(loss);
         }
 
