@@ -19,7 +19,7 @@ private:
     Matrix weights_;
     Matrix bias_;
 
-    Vector input_vector_;
+    Matrix input_vector_;
 };
 
 }  // namespace neural_net

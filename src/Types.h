@@ -12,7 +12,7 @@ using Matrix = Eigen::MatrixXd;
 using Index = Eigen::Index;
 
 struct ParametersGrad {
-    Matrix & param;
+    Matrix& param;
     Matrix grad;
 };
 
