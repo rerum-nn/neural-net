@@ -14,11 +14,11 @@ Optimizer Optimizers::Momentum(double lr, double momentum) {
 }
 
 Optimizer Optimizers::AdaGrad(double lr) {
-    return neural_net::Adam(lr, 0, 0, false);
+    return neural_net::Adam(lr, 0, 0, neural_net::Adam::FastStart::Disable);
 }
 
 Optimizer Optimizers::RMSProp(double lr, double rho) {
-    return neural_net::Adam(lr, 0, rho, false);
+    return neural_net::Adam(lr, 0, rho, neural_net::Adam::FastStart::Disable);
 }
 
 Optimizer Optimizers::Adam(double lr, double beta_1, double beta_2) {

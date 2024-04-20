@@ -1,8 +1,11 @@
 #include "Adam.h"
 
 namespace neural_net {
-Adam::Adam(double lr, double beta_1, double beta_2, bool is_fast_start)
-    : learning_rate_(lr), beta_1_(beta_1), beta_2_(beta_2), is_fast_start_(is_fast_start) {
+Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
+    : learning_rate_(lr),
+      beta_1_(beta_1),
+      beta_2_(beta_2),
+      is_fast_start_(is_fast_start == FastStart::Enable) {
 }
 
 void Adam::operator()(Network& network, const Matrix& input_data, const Matrix& labels,
