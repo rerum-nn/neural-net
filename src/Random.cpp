@@ -18,4 +18,15 @@ Matrix Random::NormalImpl(Index rows, Index cols) {
     return Eigen::Rand::normal<Matrix>(rows, cols, generator_);
 }
 
+PermutationMatrix Random::Permutation(Index size) {
+    return Instance().PermutationImpl(size);
+}
+
+PermutationMatrix Random::PermutationImpl(Index size) {
+    PermutationMatrix perm(size);
+    perm.setIdentity();
+    std::shuffle(perm.indices().begin(), perm.indices().end(), generator_);
+    return perm;
+}
+
 }  // namespace neural_net

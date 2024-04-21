@@ -3,7 +3,6 @@
 #include "BatchSlicer.h"
 
 #include <cassert>
-#include <iostream>
 #include <string>
 
 namespace neural_net {
@@ -47,9 +46,9 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
 
     fit_parameters.optimizer->InitParameters(layers_);
 
+    BatchSlicer batch_slicer(input_data, labels, batch_size);
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        for (const auto& [batch_data, batch_labels] :
-             BatchSlicer(&input_data, &labels, batch_size)) {
+        for (const auto& [batch_data, batch_labels] : batch_slicer) {
             Matrix output = Predict(batch_data);
 
             Matrix nabla = loss->LossGradient(output, batch_labels);
@@ -63,6 +62,7 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
         }
         double loss_value = loss->Loss(Predict(input_data), labels);
         optimizer->EpochCallback(epoch, max_epoch, loss_value);
+        batch_slicer.Shuffle();
         err.push_back(loss_value);
     }
 

@@ -1,19 +1,47 @@
 #include "BatchSlicer.h"
 
+#include "Random.h"
+
 namespace neural_net {
 
-BatchSlicer::BatchSlicer(const Matrix *data, const Matrix *labels, size_t batch_size)
-    : data_(data), labels_(labels), batch_size_(batch_size) {
-    assert(data != nullptr && labels != nullptr);
+BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, size_t batch_size, Mode mode)
+    : data_(data), labels_(labels), batch_size_(batch_size), mode_(mode) {
 }
 
 BatchSlicer::BatchSlicerIterator BatchSlicer::begin() {
-    return BatchSlicer::BatchSlicerIterator(data_, labels_, 0, batch_size_);
+    return BatchSlicer::BatchSlicerIterator(&data_, &labels_, 0, batch_size_);
 }
 
 BatchSlicer::BatchSlicerIterator BatchSlicer::end() {
 
-    return BatchSlicer::BatchSlicerIterator(data_, labels_, data_->rows(), batch_size_);
+    return BatchSlicer::BatchSlicerIterator(&data_, &labels_, data_.rows(), batch_size_);
+}
+
+BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, size_t batch_size, Mode mode)
+    : data_(std::move(data)), labels_(std::move(labels)), batch_size_(batch_size), mode_(mode) {
+}
+
+void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_size, Mode mode) {
+    data_ = data;
+    labels_ = labels;
+    batch_size_ = batch_size;
+    mode_ = mode;
+}
+
+void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, Mode mode) {
+    data_ = std::move(data);
+    labels_ = std::move(labels);
+    batch_size_ = std::move(batch_size_);
+    mode_ = mode;
+}
+
+void BatchSlicer::Shuffle() {
+    if (mode_ == Mode::Static) {
+        return;
+    }
+    PermutationMatrix perm = Random::Permutation(data_.rows());
+    data_ = perm * data_;
+    labels_ = perm * labels_;
 }
 
 BatchSlicer::BatchSlicerIterator::BatchSlicerIterator(const Matrix *data, const Matrix *labels,
@@ -48,5 +76,4 @@ bool BatchSlicer::BatchSlicerIterator::operator!=(
     return idx_ != other.idx_ || data_ != other.data_ || labels_ != other.labels_ ||
            batch_size_ != other.batch_size_;
 }
-
 }  // namespace neural_net

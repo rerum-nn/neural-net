@@ -17,7 +17,7 @@ TEST(Models, XOR) {
     Matrix train_data{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     Matrix labels{{0}, {1}, {1}, {0}};
 
-    sequential.Fit(train_data, labels, {BinaryCrossEntropy(), Optimizer::SGD(0.3), 10000, 0});
+    sequential.Fit(train_data, labels, {BinaryCrossEntropy(), Optimizer::SGD(0.3), 10000, 1});
     for (Index i = 0; i < 4; ++i) {
         RowVector vector = train_data.row(i);
         RowVector res;

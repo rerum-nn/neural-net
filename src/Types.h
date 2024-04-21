@@ -11,6 +11,7 @@ using RowVector = Eigen::RowVectorXd;
 using Matrix = Eigen::MatrixXd;
 using Index = Eigen::Index;
 using Array = Eigen::ArrayXXd;
+using PermutationMatrix = Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>;
 
 struct ParametersGrad {
     Matrix& param;
