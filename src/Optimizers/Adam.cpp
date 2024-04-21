@@ -10,9 +10,9 @@ Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
       is_fast_start_(is_fast_start == FastStart::Enable) {
 }
 
-void Adam::operator()(Sequential& network, const Matrix& input_data, const Matrix& labels,
+void Adam::operator()(Sequential& sequential, const Matrix& input_data, const Matrix& labels,
                       const LossFunction& loss, size_t max_epoch) const {
-    std::vector<Layer>& layers = network.GetLayers();
+    std::vector<Layer>& layers = sequential.GetLayers();
 
     std::vector<std::vector<Matrix>> first_moment(layers.size());
     std::vector<std::vector<Matrix>> second_moment(layers.size());
@@ -24,23 +24,21 @@ void Adam::operator()(Sequential& network, const Matrix& input_data, const Matri
     }
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        for (Index batch = 0; batch < input_data.rows(); ++batch) {
-            Matrix label = labels.row(batch);
-            Matrix output = network.Predict(input_data.row(batch));
+        Matrix label = labels;
+        Matrix output = sequential.Predict(input_data);
 
-            Matrix nabla = loss->LossGradient(output, label);
-            for (size_t i = 0; i < layers.size(); ++i) {
-                size_t pos = layers.size() - 1 - i;
-                Layer& layer = layers[pos];
-                UpdateParameter(layer->GetGradients(nabla), first_moment[pos], second_moment[pos],
-                                cur_beta_1, cur_beta_2);
-                nabla = layer->BackPropagation(nabla);
-            }
-            cur_beta_1 *= beta_1_;
-            cur_beta_2 *= beta_2_;
+        Matrix nabla = loss->LossGradient(output, label);
+        for (size_t i = 0; i < layers.size(); ++i) {
+            size_t pos = layers.size() - 1 - i;
+            Layer& layer = layers[pos];
+            UpdateParameter(layer->GetGradients(nabla), first_moment[pos], second_moment[pos],
+                            cur_beta_1, cur_beta_2);
+            nabla = layer->BackPropagation(nabla);
         }
+        cur_beta_1 *= beta_1_;
+        cur_beta_2 *= beta_2_;
         std::cout << "\rEpoch [" << epoch << "/" << max_epoch
-                  << "] Error: " << loss->Loss(network.Predict(input_data), labels);
+                  << "] Error: " << loss->Loss(sequential.Predict(input_data), labels);
     }
     std::cout << std::endl;
 }

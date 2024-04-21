@@ -1,5 +1,6 @@
 #include "SGD.h"
 
+#include <iostream>
 #include <ranges>
 
 namespace neural_net {
@@ -13,18 +14,18 @@ void SGD::operator()(Sequential& sequential, const Matrix& input_data, const Mat
     std::vector<std::vector<Matrix>> old_grad(layers.size());
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        for (Index batch = 0; batch < input_data.rows(); ++batch) {
-            Matrix label = labels.row(batch);
-            Matrix output = sequential.Predict(input_data.row(batch));
+        Matrix label = labels;
+        Matrix output = sequential.Predict(input_data);
 
-            Matrix nabla = loss->LossGradient(output, label);
-            for (size_t i = 0; i < layers.size(); ++i) {
-                size_t pos = layers.size() - 1 - i;
-                Layer& layer = layers[pos];
-                UpdateParameter(layer->GetGradients(nabla), old_grad[pos]);
-                nabla = layer->BackPropagation(nabla);
-            }
+        Matrix nabla = loss->LossGradient(output, label);
+        for (size_t i = 0; i < layers.size(); ++i) {
+            size_t pos = layers.size() - 1 - i;
+            Layer& layer = layers[pos];
+            UpdateParameter(layer->GetGradients(nabla), old_grad[pos]);
+            nabla = layer->BackPropagation(nabla);
         }
+        std::cout << "\rEpoch [" << epoch << "/" << max_epoch
+                  << "] Error: " << loss->Loss(sequential.Predict(input_data), labels);
     }
 }
 

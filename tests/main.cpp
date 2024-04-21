@@ -2,7 +2,7 @@
 #include "../src/Layers/Sigmoid.h"
 #include "../src/Layers/Softmax.h"
 #include "../src/LossFunctions/BinaryCrossEntropy.h"
-#include "../src/Optimizers/Optimizers.h"
+#include "../src/Optimizers/Optimizer.h"
 #include "../src/Sequential.h"
 #include "../src/Types.h"
 
@@ -18,7 +18,7 @@ TEST(Models, XOR) {
     Matrix labels{{0}, {1}, {1}, {0}};
 
     Optimizer sgd = Optimizers::SGD(0.1);
-    sgd(network, train_data, labels, BinaryCrossEntropy(), 10000);
+    sgd(network, train_data, labels, BinaryCrossEntropy(), 100000);
     for (Index i = 0; i < 4; ++i) {
         RowVector vector = train_data.row(i);
         RowVector res;
