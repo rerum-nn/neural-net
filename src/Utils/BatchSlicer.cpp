@@ -4,7 +4,8 @@
 
 namespace neural_net {
 
-BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, size_t batch_size, Mode mode)
+BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, size_t batch_size,
+                         ShuffleMode mode)
     : data_(data), labels_(labels), batch_size_(batch_size), mode_(mode) {
 }
 
@@ -17,18 +18,19 @@ BatchSlicer::BatchSlicerIterator BatchSlicer::end() {
     return BatchSlicer::BatchSlicerIterator(&data_, &labels_, data_.rows(), batch_size_);
 }
 
-BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, size_t batch_size, Mode mode)
+BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, size_t batch_size, ShuffleMode mode)
     : data_(std::move(data)), labels_(std::move(labels)), batch_size_(batch_size), mode_(mode) {
 }
 
-void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_size, Mode mode) {
+void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_size,
+                        ShuffleMode mode) {
     data_ = data;
     labels_ = labels;
     batch_size_ = batch_size;
     mode_ = mode;
 }
 
-void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, Mode mode) {
+void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, ShuffleMode mode) {
     data_ = std::move(data);
     labels_ = std::move(labels);
     batch_size_ = batch_size_;
@@ -36,7 +38,7 @@ void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, Mode 
 }
 
 void BatchSlicer::Shuffle() {
-    if (mode_ == Mode::Static) {
+    if (mode_ == ShuffleMode::Static) {
         return;
     }
     PermutationMatrix perm = Random::Permutation(data_.rows());

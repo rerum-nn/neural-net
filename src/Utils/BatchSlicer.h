@@ -25,16 +25,15 @@ public:
         size_t batch_size_;
     };
 
-    enum class Mode {
-        Static,
-        Shuffle
-    };
+    BatchSlicer(const Matrix& data, const Matrix& labels, size_t batch_size = 1,
+                ShuffleMode mode = ShuffleMode::Shuffle);
+    BatchSlicer(Matrix&& data, Matrix&& labels, size_t batch_size = 1,
+                ShuffleMode mode = ShuffleMode::Shuffle);
 
-    BatchSlicer(const Matrix& data, const Matrix& labels, size_t batch_size = 1, Mode mode = Mode::Shuffle);
-    BatchSlicer(Matrix&& data, Matrix&& labels, size_t batch_size = 1, Mode mode = Mode::Shuffle);
-
-    void Reset(const Matrix& data, const Matrix& labels, size_t batch_size = 1, Mode mode = Mode::Shuffle);
-    void Reset(Matrix&& data, Matrix&& labels, size_t batch_size = 1, Mode mode = Mode::Shuffle);
+    void Reset(const Matrix& data, const Matrix& labels, size_t batch_size = 1,
+               ShuffleMode mode = ShuffleMode::Shuffle);
+    void Reset(Matrix&& data, Matrix&& labels, size_t batch_size = 1,
+               ShuffleMode mode = ShuffleMode::Shuffle);
     void Shuffle();
 
     BatchSlicerIterator begin();
@@ -44,7 +43,7 @@ private:
     Matrix data_;
     Matrix labels_;
     size_t batch_size_;
-    Mode mode_;
+    ShuffleMode mode_;
 };
 
 }  // namespace neural_net

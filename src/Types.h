@@ -18,4 +18,9 @@ struct ParametersGrad {
     Matrix grad;
 };
 
+enum class ShuffleMode {
+    Static,
+    Shuffle
+};
+
 }  // namespace neural_net

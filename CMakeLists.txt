@@ -17,7 +17,8 @@ set(NEURAL_NET
         src/LossFunctions/CategoricalCrossEntropy.cpp
         src/Optimizers/Adam.cpp
         src/Optimizers/Optimizer.cpp
-        src/Utils/BatchSlicer.cpp)
+        src/Utils/BatchSlicer.cpp
+        src/Utils/DataSplit.cpp)
 set(INCLUDE_DIRECTORIES eigen EigenRand)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
