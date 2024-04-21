@@ -31,7 +31,7 @@ void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_s
 void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, Mode mode) {
     data_ = std::move(data);
     labels_ = std::move(labels);
-    batch_size_ = std::move(batch_size_);
+    batch_size_ = batch_size_;
     mode_ = mode;
 }
 
