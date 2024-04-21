@@ -15,13 +15,6 @@ Matrix Sequential::Predict(const Matrix& input_data) {
 
     for (Layer& layer : layers_) {
         iteration = layer->Apply(iteration);
-        //        for (Index i = 0; i < iteration.rows(); ++i) {
-        //            for (Index j = 0; j < iteration.cols(); ++j) {
-        //                std::cout << iteration(i, j) << ' ' << std::endl;
-        //            }
-        //            std::cout << std::endl;
-        //        }
-        //        std::cout << std::endl;
     }
 
     return iteration.transpose();
@@ -39,6 +32,34 @@ Sequential& Sequential::AddLayer(Layer&& layer) {
 
 std::vector<Layer>& Sequential::GetLayers() {
     return layers_;
+}
+
+std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labels,
+                                    const LossFunction& loss, Optimizer&& optimizer,
+                                    size_t max_epoch) {
+    std::vector<double> err;
+
+    optimizer->InitParameters(layers_);
+
+    for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
+        Matrix label = labels;
+        Matrix output = Predict(input_data);
+
+        Matrix nabla = loss->LossGradient(output, label);
+        for (size_t i = 0; i < layers_.size(); ++i) {
+            size_t pos = layers_.size() - 1 - i;
+            Layer& layer = layers_[pos];
+            optimizer->Update(layer->GetGradients(nabla), pos);
+            nabla = layer->BackPropagation(nabla);
+        }
+        optimizer->BatchCallback();
+
+        double loss_value = loss->Loss(Predict(input_data), labels);
+        optimizer->EpochCallback(epoch, max_epoch, loss_value);
+        err.push_back(loss_value);
+    }
+
+    return err;
 }
 
 }  // namespace neural_net

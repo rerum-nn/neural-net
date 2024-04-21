@@ -7,30 +7,13 @@ namespace neural_net {
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
 }
 
-void SGD::operator()(Sequential& sequential, const Matrix& input_data, const Matrix& labels,
-                     const LossFunction& loss, size_t max_epoch) const {
-    std::vector<Layer>& layers = sequential.GetLayers();
-
-    std::vector<std::vector<Matrix>> old_grad(layers.size());
-
-    for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        Matrix label = labels;
-        Matrix output = sequential.Predict(input_data);
-
-        Matrix nabla = loss->LossGradient(output, label);
-        for (size_t i = 0; i < layers.size(); ++i) {
-            size_t pos = layers.size() - 1 - i;
-            Layer& layer = layers[pos];
-            UpdateParameter(layer->GetGradients(nabla), old_grad[pos]);
-            nabla = layer->BackPropagation(nabla);
-        }
-        std::cout << "\rEpoch [" << epoch << "/" << max_epoch
-                  << "] Error: " << loss->Loss(sequential.Predict(input_data), labels);
-    }
+void SGD::InitParameters(const std::vector<Layer>& layers) {
+    old_grads_.clear();
+    old_grads_.resize(layers.size());
 }
 
-void SGD::UpdateParameter(const std::vector<ParametersGrad>& pack,
-                          std::vector<Matrix>& old_grad) const {
+void SGD::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
+    std::vector<Matrix>& old_grad = old_grads_[layer_id];
     if (old_grad.empty()) {
         for (size_t i = 0; i < pack.size(); ++i) {
             const ParametersGrad& param = pack[i];
@@ -48,6 +31,13 @@ void SGD::UpdateParameter(const std::vector<ParametersGrad>& pack,
         param.param -= delta;
         old_grad[i] = delta;
     }
+}
+
+void SGD::BatchCallback() {
+}
+
+void SGD::EpochCallback(size_t epoch, size_t max_epoch, double loss) {
+    std::cout << "\rEpoch [" << epoch << "/" << max_epoch << "] Error: " << loss;
 }
 
 }  // namespace neural_net

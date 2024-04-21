@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../Layers/Layer.h"
 #include "../LossFunctions/LossFunction.h"
-#include "../Sequential.h"
 #include "../Types.h"
 
 #include <vector>
@@ -12,15 +12,16 @@ class SGD {
 public:
     SGD(double lr = 0.01, double momentum = .0);
 
-    void operator()(Sequential& sequential, const Matrix& input_data, const Matrix& labels,
-                    const LossFunction& loss, size_t max_epoch = 10000) const;
+    void InitParameters(const std::vector<Layer>& layers);
+    void Update(const std::vector<ParametersGrad>& pack, size_t layer_id);
+    void BatchCallback();
+    void EpochCallback(size_t epoch, size_t max_epoch, double loss);
 
 private:
-    void UpdateParameter(const std::vector<ParametersGrad>& pack,
-                         std::vector<Matrix>& old_grad) const;
-
     double learning_rate_;
     double moment_;
+
+    std::vector<std::vector<Matrix>> old_grads_;
 };
 
 }  // namespace neural_net

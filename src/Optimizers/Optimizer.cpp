@@ -5,23 +5,23 @@
 
 namespace neural_net {
 
-Optimizer Optimizers::SGD(double lr) {
+Optimizer Optimizer::SGD(double lr) {
     return neural_net::SGD(lr);
 }
 
-Optimizer Optimizers::Momentum(double lr, double momentum) {
+Optimizer Optimizer::Momentum(double lr, double momentum) {
     return neural_net::SGD(lr, momentum);
 }
 
-Optimizer Optimizers::AdaGrad(double lr) {
+Optimizer Optimizer::AdaGrad(double lr) {
     return neural_net::Adam(lr, 0, 0, neural_net::Adam::FastStart::Disable);
 }
 
-Optimizer Optimizers::RMSProp(double lr, double rho) {
+Optimizer Optimizer::RMSProp(double lr, double rho) {
     return neural_net::Adam(lr, 0, rho, neural_net::Adam::FastStart::Disable);
 }
 
-Optimizer Optimizers::Adam(double lr, double beta_1, double beta_2) {
+Optimizer Optimizer::Adam(double lr, double beta_1, double beta_2) {
     return neural_net::Adam(lr, beta_1, beta_2);
 }
 
