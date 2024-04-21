@@ -24,10 +24,8 @@ Matrix Linear::Apply(const Matrix& input_data) {
 
 std::vector<ParametersGrad> Linear::GetGradients(const Matrix& loss) {
     assert(input_data_.size() != 0 && "input_vector for fit information hasn't been transferred");
-    Matrix weights_delta = (input_data_ * loss).transpose();
-    Matrix bias_delta = loss.transpose().rowwise().sum();
-    std::vector<ParametersGrad> gradients{{weights_, weights_delta}, {bias_, bias_delta}};
-    return gradients;
+    return {{weights_, (input_data_ * loss).transpose()},
+            {bias_, loss.transpose().rowwise().sum()}};
 }
 
 Matrix Linear::BackPropagation(const Matrix& loss) const {

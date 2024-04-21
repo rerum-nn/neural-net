@@ -10,7 +10,7 @@ public:
     Matrix LossGradient(const Matrix& present, const Matrix& expected) const;
 
 private:
-    static constexpr double kEpsilon = 1e-8;
+    static constexpr double kEpsilon = 1e-7;
 };
 
 }  // namespace neural_net

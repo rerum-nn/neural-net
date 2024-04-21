@@ -1,4 +1,4 @@
-#include "DataSplit.h"
+#include "DataManipulate.h"
 
 #include "Random.h"
 
@@ -18,6 +18,20 @@ std::tuple<Matrix, Matrix, Matrix, Matrix> TrainTestSplit(const Matrix& data, co
     }
     return {data.topRows(train_size), labels.topRows(train_size), data.bottomRows(train_size),
             labels.bottomRows(test_size)};
+}
+
+Matrix IntLabelsToCategorical(const Matrix& labels) {
+    assert(labels.cols() == 1);
+    Eigen::MatrixXi int_matrix = labels.cast<int>();
+    assert((int_matrix.array() >= 0).all());
+    Index max_category = int_matrix.maxCoeff() + 1;
+
+    Matrix categorical_labels(labels.rows(), max_category);
+    categorical_labels.setZero();
+    for (Index i = 0; i < int_matrix.rows(); ++i) {
+        categorical_labels(i, int_matrix(i, 0)) = 1;
+    }
+    return categorical_labels;
 }
 
 }  // namespace neural_net

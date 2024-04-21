@@ -1,17 +1,17 @@
 #pragma once
 
-#include "../Types.h"
+#include "Types.h"
 
 namespace neural_net {
 
-class Sigmoid {
+class ReLU {
 public:
-    Matrix Apply(const Matrix& input_vector);
+    Matrix Apply(const Matrix& input_data);
     std::vector<ParametersGrad> GetGradients(const Matrix& loss);
     Matrix BackPropagation(const Matrix& loss) const;
-
 private:
-    Matrix sigmoid_data_;
+    Matrix computed_data_;
 };
 
 }  // namespace neural_net
+

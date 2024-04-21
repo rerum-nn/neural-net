@@ -6,6 +6,6 @@ double CategoricalCrossEntropy::Loss(const Matrix& present, const Matrix& expect
 }
 
 Matrix CategoricalCrossEntropy::LossGradient(const Matrix& present, const Matrix& expected) const {
-    return -expected.array() / present.array() / present.rows();
+    return -expected.array() / (present.array() + kEpsilon) / present.rows();
 }
 }  // namespace neural_net

@@ -3,6 +3,7 @@
 #include "Utils/BatchSlicer.h"
 
 #include <cassert>
+#include <iostream>
 #include <string>
 
 namespace neural_net {
@@ -48,22 +49,37 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
 
     BatchSlicer batch_slicer(input_data, labels, batch_size);
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
+        double total_loss = 0;
+        int count_batch = 0;
+        time_t start = time(nullptr);
         for (const auto& [batch_data, batch_labels] : batch_slicer) {
             Matrix output = Predict(batch_data);
 
+            double loss_value = loss->Loss(output, batch_labels);
+            total_loss += loss_value;
             Matrix nabla = loss->LossGradient(output, batch_labels);
+            std::vector<std::vector<ParametersGrad>> grads;
+            grads.reserve(layers_.size());
             for (size_t i = 0; i < layers_.size(); ++i) {
                 size_t pos = layers_.size() - 1 - i;
                 Layer& layer = layers_[pos];
-                optimizer->Update(layer->GetGradients(nabla), pos);
-                nabla = layer->BackPropagation(nabla);
+                Matrix next_nabla = layer->BackPropagation(nabla);
+                grads.push_back(layer->GetGradients(nabla));
+                nabla = next_nabla;
+            }
+            for (size_t i = 0; i < grads.size(); ++i) {
+                size_t pos = layers_.size() - 1 - i;
+                optimizer->Update(grads[pos], pos);
             }
             optimizer->BatchCallback();
+            ++count_batch;
         }
-        double loss_value = loss->Loss(Predict(input_data), labels);
-        optimizer->EpochCallback(epoch, max_epoch, loss_value);
+        time_t end = time(nullptr);
+        total_loss /= count_batch;
+        optimizer->EpochCallback(epoch, max_epoch, total_loss);
+        std::cout << "Time: " << end - start << std::endl;
         batch_slicer.Shuffle();
-        err.push_back(loss_value);
+        err.push_back(total_loss);
     }
 
     return err;

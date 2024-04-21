@@ -5,6 +5,10 @@ project(NeuralNet
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native -fopenmp")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -fno-math-errno")
+
 set(NEURAL_NET
         src/Layers/Linear.cpp
         src/Sequential.cpp
@@ -18,12 +22,17 @@ set(NEURAL_NET
         src/Optimizers/Adam.cpp
         src/Optimizers/Optimizer.cpp
         src/Utils/BatchSlicer.cpp
-        src/Utils/DataSplit.cpp)
-set(INCLUDE_DIRECTORIES eigen EigenRand)
+        src/Utils/DataManipulate.cpp
+        src/Datasets/MNIST/MnistDataset.cpp
+        src/Layers/ReLU.cpp)
+set(INCLUDE_DIRECTORIES eigen EigenRand src)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
 add_library(NeuralNet ${NEURAL_NET})
 target_include_directories(NeuralNet PRIVATE ${INCLUDE_DIRECTORIES})
+
+add_executable(mnist tests/mnist.cpp ${NEURAL_NET})
+target_include_directories(mnist PRIVATE ${INCLUDE_DIRECTORIES})
 
 enable_testing()
 add_subdirectory(googletest)

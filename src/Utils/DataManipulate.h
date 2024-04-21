@@ -10,4 +10,6 @@ std::tuple<Matrix, Matrix, Matrix, Matrix> TrainTestSplit(const Matrix& data, co
                                                           double train_ratio = 0.8,
                                                           ShuffleMode mode = ShuffleMode::Shuffle);
 
+Matrix IntLabelsToCategorical(const Matrix& labels);
+
 }  // namespace neural_net
