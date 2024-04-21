@@ -1,6 +1,6 @@
 #include "Sequential.h"
 
-#include "BatchSlicer.h"
+#include "Utils/BatchSlicer.h"
 
 #include <cassert>
 #include <string>

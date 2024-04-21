@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Types.h"
-
-#include <EigenRand/EigenRand>
+#include "../Types.h"
+#include "EigenRand/EigenRand"
 
 #include <random>
 

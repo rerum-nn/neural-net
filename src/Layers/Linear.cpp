@@ -1,6 +1,6 @@
 #include "Linear.h"
 
-#include "../Random.h"
+#include "../Utils/Random.h"
 
 namespace neural_net {
 
