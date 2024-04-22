@@ -4,6 +4,7 @@
 #include <iostream>
 
 namespace neural_net {
+
 std::tuple<Matrix, Matrix, Matrix, Matrix> MnistDataset::LoadData() {
     auto [train_data, train_labels] = ReadCsv("mnist_train.csv");
     auto [test_data, test_labels] = ReadCsv("mnist_test.csv");

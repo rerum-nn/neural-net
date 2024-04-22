@@ -89,7 +89,7 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
         Matrix validate_output = Predict(validate_data);
         double loss_value = loss->Loss(validate_output, validate_labels);
         double acc = Metric::CategoricalAccuracy()(validate_output, validate_labels);
-        optimizer->EpochCallback(epoch, max_epoch, loss_value);
+        optimizer->EpochCallback(epoch, max_epoch);
         std::cout << "Time: " << end - start << " Acc: " << acc << std::endl;
         err.push_back(loss_value);
     }

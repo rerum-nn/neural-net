@@ -1,8 +1,7 @@
 #include "Adam.h"
 
-#include <iostream>
-
 namespace neural_net {
+
 Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
     : learning_rate_(lr),
       beta_1_(beta_1),
@@ -35,7 +34,8 @@ void Adam::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
         second_moment.resize(pack.size());
         for (size_t i = 0; i < pack.size(); ++i) {
             const ParametersGrad& param = pack[i];
-            assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
+            assert(param.param.rows() == param.grad.rows() &&
+                   param.param.cols() == param.grad.cols());
             first_moment[i] = (1 - beta_1_) * param.grad;
             second_moment[i] = (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
             param.param -= learning_rate_ *
@@ -51,7 +51,8 @@ void Adam::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
         const ParametersGrad& param = pack[i];
         assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
         first_moment[i] = beta_1_ * first_moment[i] + (1 - beta_1_) * param.grad;
-        second_moment[i] = beta_2_ * second_moment[i] + (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
+        second_moment[i] =
+            beta_2_ * second_moment[i] + (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
         param.param -=
             learning_rate_ * ((first_moment[i] / (1 - cur_beta_1_)).array() /
                               (((second_moment[i] / (1 - cur_beta_2_)).array() + kEpsilon).sqrt()))
@@ -64,7 +65,7 @@ void Adam::BatchCallback() {
     cur_beta_2_ *= beta_2_;
 }
 
-void Adam::EpochCallback(size_t epoch, size_t max_epoch, double loss) {
-    std::cout << "Epoch [" << epoch << "/" << max_epoch << "] Error: " << loss << std::endl;
+void Adam::EpochCallback(size_t epoch, size_t max_epoch) {
 }
+
 }  // namespace neural_net

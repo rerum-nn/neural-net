@@ -1,8 +1,8 @@
 #pragma once
 
-#include <tuple>
-
 #include "Types.h"
+
+#include <tuple>
 
 namespace neural_net {
 

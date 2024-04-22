@@ -16,4 +16,5 @@ Matrix ReLU::BackPropagation(const Matrix& loss) const {
     Matrix derivative = computed_data_.unaryExpr([](double d) { return d != 0 ? 1. : 0.; });
     return loss.cwiseProduct(derivative.transpose());
 }
+
 }  // namespace neural_net

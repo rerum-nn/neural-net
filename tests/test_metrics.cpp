@@ -40,4 +40,3 @@ TEST(BinaryAccuracy, InvalidThreshold) {
     ASSERT_DEATH(Metric::BinaryAccuracy(-0.5), "");
     ASSERT_DEATH(Metric::BinaryAccuracy(1.5), "");
 }
-

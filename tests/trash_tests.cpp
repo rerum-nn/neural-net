@@ -41,4 +41,3 @@ TEST(CheckLayers, Softmax) {
         std::cout << i << ": " << ans[i] << std::endl;
     }
 }
-

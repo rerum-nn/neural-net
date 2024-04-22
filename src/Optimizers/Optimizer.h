@@ -1,16 +1,13 @@
 #pragma once
 
-#include "../Layers/Layer.h"
-#include "../LossFunctions/LossFunction.h"
-#include "../Types.h"
+#include "Layers/Layer.h"
+#include "LossFunctions/LossFunction.h"
+#include "Types.h"
 
-#include <any>
+#include <memory>
 #include <vector>
 
 namespace neural_net {
-
-// using Optimizer =
-//     std::function<void(Sequential&, const Matrix&, const Matrix&, const LossFunction&, size_t)>;
 
 class Optimizer {
 private:
@@ -57,7 +54,7 @@ private:
         virtual void InitParameters(const std::vector<Layer>& layers) = 0;
         virtual void Update(const std::vector<ParametersGrad>& params, size_t layer_id) = 0;
         virtual void BatchCallback() = 0;
-        virtual void EpochCallback(size_t epoch, size_t max_epoch, double loss) = 0;
+        virtual void EpochCallback(size_t epoch, size_t max_epoch) = 0;
 
         virtual ~OptimizerConcept() = default;
 
@@ -70,36 +67,37 @@ private:
     template <typename OptimizerT>
     class OptimizerModel : public OptimizerConcept {
     public:
-        OptimizerModel(const OptimizerT& func) : optimizer(func) {
+        OptimizerModel(const OptimizerT& func) : optimizer_(func) {
         }
 
-        OptimizerModel(OptimizerT&& func) : optimizer(std::move(func)) {
+        OptimizerModel(OptimizerT&& func) : optimizer_(std::move(func)) {
         }
 
         void InitParameters(const std::vector<Layer>& layers) override {
-            optimizer.InitParameters(layers);
+            optimizer_.InitParameters(layers);
         }
 
         void Update(const std::vector<ParametersGrad>& params, size_t layer_id) override {
-            optimizer.Update(params, layer_id);
+            optimizer_.Update(params, layer_id);
         }
 
         void BatchCallback() override {
-            optimizer.BatchCallback();
+            optimizer_.BatchCallback();
         }
 
-        void EpochCallback(size_t epoch, size_t max_epoch, double loss) override {
-            optimizer.EpochCallback(epoch, max_epoch, loss);
+        void EpochCallback(size_t epoch, size_t max_epoch) override {
+            optimizer_.EpochCallback(epoch, max_epoch);
         }
 
     private:
         std::unique_ptr<OptimizerConcept> Clone() const override {
-            return std::make_unique<OptimizerModel>(optimizer);
+            return std::make_unique<OptimizerModel>(optimizer_);
         }
 
-        OptimizerT optimizer;
+        OptimizerT optimizer_;
     };
 
     std::unique_ptr<OptimizerConcept> object_;
 };
+
 }  // namespace neural_net

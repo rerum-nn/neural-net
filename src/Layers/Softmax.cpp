@@ -1,6 +1,7 @@
 #include "Softmax.h"
 
 namespace neural_net {
+
 Matrix Softmax::Apply(const Matrix& input_vector) {
     assert(input_vector.size() > 0);
     double mx = input_vector.maxCoeff();
@@ -26,4 +27,5 @@ Matrix Softmax::BackPropagation(const Matrix& loss) const {
     }
     return res;
 }
+
 }  // namespace neural_net

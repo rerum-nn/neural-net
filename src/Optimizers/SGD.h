@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Layers/Layer.h"
-#include "../LossFunctions/LossFunction.h"
-#include "../Types.h"
+#include "Layers/Layer.h"
+#include "LossFunctions/LossFunction.h"
+#include "Types.h"
 
 #include <vector>
 
@@ -15,7 +15,7 @@ public:
     void InitParameters(const std::vector<Layer>& layers);
     void Update(const std::vector<ParametersGrad>& pack, size_t layer_id);
     void BatchCallback();
-    void EpochCallback(size_t epoch, size_t max_epoch, double loss);
+    void EpochCallback(size_t epoch, size_t max_epoch);
 
 private:
     double learning_rate_;

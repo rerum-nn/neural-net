@@ -33,7 +33,7 @@ void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, Index batch_si
 void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, Index batch_size, ShuffleMode mode) {
     data_ = std::move(data);
     labels_ = std::move(labels);
-    batch_size_ = batch_size_;
+    batch_size_ = batch_size;
     mode_ = mode;
 }
 
@@ -78,4 +78,5 @@ bool BatchSlicer::BatchSlicerIterator::operator!=(
     return idx_ != other.idx_ || data_ != other.data_ || labels_ != other.labels_ ||
            batch_size_ != other.batch_size_;
 }
+
 }  // namespace neural_net

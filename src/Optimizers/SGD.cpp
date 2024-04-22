@@ -1,9 +1,7 @@
 #include "SGD.h"
 
-#include <iostream>
-#include <ranges>
-
 namespace neural_net {
+
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
 }
 
@@ -39,8 +37,7 @@ void SGD::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
 void SGD::BatchCallback() {
 }
 
-void SGD::EpochCallback(size_t epoch, size_t max_epoch, double loss) {
-    std::cout << "\rEpoch [" << epoch << "/" << max_epoch << "] Error: " << loss;
+void SGD::EpochCallback(size_t epoch, size_t max_epoch) {
 }
 
 }  // namespace neural_net
