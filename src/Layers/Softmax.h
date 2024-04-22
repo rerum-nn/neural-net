@@ -10,6 +10,8 @@ public:
     std::vector<ParametersGrad> GetGradients(const Matrix& loss);
     Matrix BackPropagation(const Matrix& loss) const;
 
+    void Serialize(std::ostream& os) const;
+
 private:
     Matrix exp_data_;
 };

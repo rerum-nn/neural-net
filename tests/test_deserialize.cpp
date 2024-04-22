@@ -15,26 +15,16 @@
 using namespace neural_net;
 
 int main() {
-    omp_set_num_threads(6);
+    Sequential sequential;
+    std::ifstream model_file("model.fnn");
+    sequential.Deserialize(model_file);
 
     auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();
     Matrix train_labels = IntLabelsToCategorical(y_train);
     Matrix test_labels = IntLabelsToCategorical(y_test);
 
-    std::cout << "start of fitting\n";
-    Sequential sequential({Linear(784, 128), ReLU(), Linear(128, 10), Softmax()});
-    sequential.Fit(x_train, train_labels,
-                   {CategoricalCrossEntropy(),
-                    Optimizer::Adam(),
-                    100,
-                    64,
-                    0.2,
-                    {Metric::CategoricalAccuracy()}});
-
     auto test_metrics = sequential.Evaluate(x_test, test_labels, CategoricalCrossEntropy(),
                                             {Metric::CategoricalAccuracy()});
     std::cout << "Loss test: " << test_metrics[0] << " Acc: " << test_metrics[1] << '\n';
-
-    std::ofstream model_file("model.fnn", std::ios::out);
-    sequential.Serialize(model_file);
 }
+

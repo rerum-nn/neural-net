@@ -10,6 +10,8 @@
 
 #include <string>
 #include <vector>
+#include <ostream>
+#include <istream>
 
 namespace neural_net {
 
@@ -24,6 +26,7 @@ struct FitParameters {
 
 class Sequential {
 public:
+    Sequential() = default;
     Sequential(std::initializer_list<Layer> layers);
 
     Matrix Predict(const Matrix& input_data);
@@ -38,6 +41,9 @@ public:
     Sequential& AddLayer(Layer&& layer);
 
     std::vector<Layer>& GetLayers();
+
+    void Serialize(std::ostream& os) const;
+    void Deserialize(std::istream& is);
 
 private:
     std::vector<Layer> layers_;

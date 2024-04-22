@@ -2,6 +2,7 @@
 
 #include "Types.h"
 
+#include <istream>
 #include <memory>
 
 namespace neural_net {
@@ -11,6 +12,8 @@ private:
     class LayerConcept;
 
 public:
+    static Layer DeserializeLayer(std::istream& is);
+
     template <typename LayerT>
     Layer(LayerT&& layer)
         : object_(std::make_unique<LayerModel<LayerT>>(std::forward<LayerT>(layer))) {
@@ -45,6 +48,8 @@ private:
         virtual std::vector<ParametersGrad> GetGradients(const Matrix& loss) = 0;
         virtual Matrix BackPropagation(const Matrix& loss) const = 0;
 
+        virtual void Serialize(std::ostream& os) const = 0;
+
         virtual ~LayerConcept() = default;
 
     private:
@@ -72,6 +77,10 @@ private:
 
         Matrix BackPropagation(const Matrix& loss) const override {
             return layer_.BackPropagation(loss);
+        }
+
+        void Serialize(std::ostream& os) const override {
+            layer_.Serialize(os);
         }
 
     private:

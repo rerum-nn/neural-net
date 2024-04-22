@@ -17,4 +17,8 @@ Matrix ReLU::BackPropagation(const Matrix& loss) const {
     return loss.cwiseProduct(derivative.transpose());
 }
 
+void ReLU::Serialize(std::ostream& os) const {
+    os << " relu ";
+}
+
 }  // namespace neural_net

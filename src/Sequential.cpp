@@ -12,7 +12,6 @@
 namespace neural_net {
 
 Sequential::Sequential(std::initializer_list<Layer> layers) : layers_(layers) {
-    assert(layers.size() >= 1 && "there should be at least one layer in a network");
 }
 
 Matrix Sequential::Predict(const Matrix& input_data) {
@@ -108,6 +107,22 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
     }
 
     return loss_values;
+}
+
+void Sequential::Serialize(std::ostream& os) const {
+    os << layers_.size();
+    for (const Layer& layer : layers_) {
+        layer->Serialize(os);
+    }
+}
+
+void Sequential::Deserialize(std::istream& is) {
+    size_t size;
+    is >> size;
+    layers_.reserve(size);
+    for (size_t i = 0; i < size; ++i) {
+        layers_.push_back(Layer::DeserializeLayer(is));
+    }
 }
 
 }  // namespace neural_net

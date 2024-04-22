@@ -28,4 +28,8 @@ Matrix Softmax::BackPropagation(const Matrix& loss) const {
     return res;
 }
 
+void Softmax::Serialize(std::ostream& os) const {
+    os << " softmax ";
+}
+
 }  // namespace neural_net

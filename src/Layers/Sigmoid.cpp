@@ -19,4 +19,8 @@ Matrix Sigmoid::BackPropagation(const Matrix& loss) const {
     return loss.cwiseProduct(derivative.transpose());
 }
 
+void Sigmoid::Serialize(std::ostream& os) const {
+    os << " sigmoid ";
+}
+
 }  // namespace neural_net

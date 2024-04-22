@@ -28,6 +28,7 @@ set(NEURAL_NET
         src/Metrics/Metric.cpp
         src/Utils/Timer.cpp
         src/Utils/Timer.h
+        src/Layers/Layer.cpp
 )
 set(INCLUDE_DIRECTORIES eigen EigenRand src)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
@@ -44,9 +45,6 @@ add_executable(tests tests/trash_tests.cpp ${NEURAL_NET})
 target_include_directories(tests PRIVATE ${GOOGLE_TEST} ${INCLUDE_DIRECTORIES})
 target_link_libraries(tests gtest_main gmock_main)
 
-add_executable(test_eigen tests/test_eigen.cpp )
-target_include_directories(test_eigen PRIVATE ${INCLUDE_DIRECTORIES})
-
 add_executable(test_metrics tests/test_metrics.cpp ${NEURAL_NET})
 target_include_directories(test_metrics PRIVATE ${GOOGLE_TEST} ${INCLUDE_DIRECTORIES})
 target_link_libraries(test_metrics gtest_main gmock_main)
@@ -61,3 +59,5 @@ add_executable(test_layers tests/test_layers.cpp ${NEURAL_NET}
 target_include_directories(test_layers PRIVATE ${GOOGLE_TEST} ${INCLUDE_DIRECTORIES})
 target_link_libraries(test_layers gtest_main gmock_main)
 
+add_executable(test_save_model tests/test_deserialize.cpp ${NEURAL_NET})
+target_include_directories(test_save_model PRIVATE ${INCLUDE_DIRECTORIES})
