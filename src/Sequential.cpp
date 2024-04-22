@@ -2,10 +2,12 @@
 
 #include "Utils/BatchSlicer.h"
 #include "Utils/DataManipulate.h"
+#include "Utils/Timer.h"
 
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <chrono>
 
 namespace neural_net {
 
@@ -53,18 +55,22 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
                                     FitParameters fit_parameters) {
     LossFunction& loss = fit_parameters.loss;
     Optimizer& optimizer = fit_parameters.optimizer;
+    const std::vector<Metric>& metrics = fit_parameters.metrics;
     size_t max_epoch = fit_parameters.max_epoch;
     size_t batch_size = fit_parameters.batch_size;
+    double validate_ratio = fit_parameters.validate_ratio;
 
-    std::vector<double> err;
-    err.reserve(fit_parameters.max_epoch);
+    std::vector<double> loss_values;
+    loss_values.reserve(max_epoch);
 
-    fit_parameters.optimizer->InitParameters(layers_);
+    optimizer->InitParameters(layers_);
+
+    Timer timer;
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
         auto [train_data, train_labels, validate_data, validate_labels] = TrainTestSplit(
-            input_data, labels, (1 - fit_parameters.validate_ratio), ShuffleMode::Shuffle);
-        time_t start = time(nullptr);
+            input_data, labels, (1 - validate_ratio), ShuffleMode::Shuffle);
+        timer.Reset();
         for (const auto& [batch_data, batch_labels] :
              BatchSlicer(train_data, train_labels, batch_size, ShuffleMode::Static)) {
             Matrix output = Predict(batch_data);
@@ -85,16 +91,23 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
             }
             optimizer->BatchCallback();
         }
-        time_t end = time(nullptr);
+        optimizer->EpochCallback(epoch, max_epoch);
+
+        auto end= std::chrono::system_clock::now();
+
         Matrix validate_output = Predict(validate_data);
         double loss_value = loss->Loss(validate_output, validate_labels);
-        double acc = Metric::CategoricalAccuracy()(validate_output, validate_labels);
-        optimizer->EpochCallback(epoch, max_epoch);
-        std::cout << "Time: " << end - start << " Acc: " << acc << std::endl;
-        err.push_back(loss_value);
+        loss_values.push_back(loss_value);
+
+        std::cout << "Epoch [" << epoch << "/" << max_epoch << "] Time: " << timer.GetTimerString() << '\n';
+        std::cout << "loss: " << loss_value;
+        for (const Metric& metric : metrics) {
+            std::cout << ' ' << metric.GetName() << ": " << metric(validate_output, validate_labels);
+        }
+        std::cout << "\n\n";
     }
 
-    return err;
+    return loss_values;
 }
 
 }  // namespace neural_net

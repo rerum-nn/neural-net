@@ -26,6 +26,8 @@ set(NEURAL_NET
         src/Datasets/MNIST/MnistDataset.cpp
         src/Layers/ReLU.cpp
         src/Metrics/Metric.cpp
+        src/Utils/Timer.cpp
+        src/Utils/Timer.h
 )
 set(INCLUDE_DIRECTORIES eigen EigenRand src)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)

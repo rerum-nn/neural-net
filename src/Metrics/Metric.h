@@ -11,10 +11,13 @@ public:
 
     double operator()(const Matrix& pred, const Matrix& expected) const;
 
+    std::string GetName() const;
+
 private:
-    Metric(std::function<double(const Matrix&, const Matrix&)> func);
+    Metric(std::function<double(const Matrix&, const Matrix&)> func, const std::string& name = "");
 
     std::function<double(const Matrix&, const Matrix&)> compute_;
+    std::string name_;
 };
 
 }  // namespace neural_net

@@ -2,7 +2,8 @@
 
 namespace neural_net {
 
-Metric::Metric(std::function<double(const Matrix &, const Matrix &)> func) : compute_(func) {
+Metric::Metric(std::function<double(const Matrix &, const Matrix &)> func, const std::string &name)
+    : compute_(func), name_(name) {
 }
 
 double neural_net::Metric::operator()(const Matrix &pred, const Matrix &expected) const {
@@ -18,7 +19,7 @@ Metric Metric::BinaryAccuracy(double threshold) {
         return static_cast<double>(right_answers) / pred.rows();
     };
 
-    return Metric(func);
+    return Metric(func, "binary_acc");
 }
 
 Metric Metric::CategoricalAccuracy() {
@@ -41,7 +42,11 @@ Metric Metric::CategoricalAccuracy() {
         return static_cast<double>(right_answers) / pred.rows();
     };
 
-    return Metric(func);
+    return Metric(func, "categorical_acc");
+}
+
+std::string Metric::GetName() const {
+    return name_;
 }
 
 }  // namespace neural_net

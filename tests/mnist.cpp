@@ -3,6 +3,7 @@
 #include "Layers/ReLU.h"
 #include "Layers/Softmax.h"
 #include "LossFunctions/CategoricalCrossEntropy.h"
+#include "Metrics/Metric.h"
 #include "Optimizers/Optimizer.h"
 #include "Sequential.h"
 #include "Types.h"
@@ -22,5 +23,14 @@ int main() {
     std::cout << "start of fitting\n";
     Sequential sequential({Linear(784, 128), ReLU(), Linear(128, 10), Softmax()});
     sequential.Fit(x_train, train_labels,
-                   {CategoricalCrossEntropy(), Optimizer::Adam(), 100, 32, 0.2});
+                   {CategoricalCrossEntropy(),
+                    Optimizer::Adam(),
+                    60,
+                    32,
+                    0.2,
+                    {Metric::CategoricalAccuracy()}});
+
+    auto test_metrics = sequential.Evaluate(x_test, test_labels, CategoricalCrossEntropy(),
+                                            {Metric::CategoricalAccuracy()});
+    std::cout << "Loss test: " << test_metrics[0] << " Acc: " << test_metrics[1] << '\n';
 }

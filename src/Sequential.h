@@ -19,6 +19,7 @@ struct FitParameters {
     size_t max_epoch = 10000;
     size_t batch_size = 1;
     double validate_ratio = 0.1;
+    std::vector<Metric> metrics;
 };
 
 class Sequential {
