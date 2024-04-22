@@ -12,7 +12,7 @@ Linear::Linear(Index input, Index output)
 
 Linear::Linear(Matrix weights, Vector bias) : weights_(weights), bias_(bias) {
     assert(weights.size() > 0 && "weights cannot be empty");
-    assert(weights.rows() != bias.rows() && "weights rows should be equal bias rows");
+    assert(weights.rows() == bias.rows() && "weights rows should be equal bias rows");
 }
 
 Matrix Linear::Apply(const Matrix& input_data) {

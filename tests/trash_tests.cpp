@@ -16,15 +16,6 @@
 
 using namespace neural_net;
 
-TEST(Models, MNIST) {
-    auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();
-    Matrix train_labels = IntLabelsToCategorical(y_train);
-    Matrix test_labels = IntLabelsToCategorical(y_test);
-
-    Sequential sequential({Linear(784, 512), ReLU(), Linear(512, 512), ReLU(), Linear(512, 10), Softmax()});
-    sequential.Fit(x_train, train_labels, {CategoricalCrossEntropy(), Optimizer::Adam(), 1, 1});
-}
-
 TEST(Models, XOR) {
     Sequential sequential({Linear(2, 2), Sigmoid(), Linear(2, 1), Sigmoid()});
     Matrix train_data{{0, 0}, {0, 1}, {1, 0}, {1, 1}};

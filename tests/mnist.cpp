@@ -13,14 +13,14 @@
 using namespace neural_net;
 
 int main() {
-    Eigen::setNbThreads(6);
+    omp_set_num_threads(6);
 
     auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();
     Matrix train_labels = IntLabelsToCategorical(y_train);
     Matrix test_labels = IntLabelsToCategorical(y_test);
 
     std::cout << "start of fitting\n";
-    Sequential sequential({Linear(784, 128), ReLU(), Linear(128, 64), ReLU(), Linear(64, 10), Softmax()});
-    sequential.Fit(x_train, train_labels, {CategoricalCrossEntropy(), Optimizer::Adam(), 10, 1});
-
+    Sequential sequential({Linear(784, 128), ReLU(), Linear(128, 10), Softmax()});
+    sequential.Fit(x_train, train_labels,
+                   {CategoricalCrossEntropy(), Optimizer::Adam(), 100, 32, 0.2});
 }

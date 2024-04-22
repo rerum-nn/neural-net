@@ -17,6 +17,8 @@ void SGD::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
     if (old_grad.empty()) {
         for (size_t i = 0; i < pack.size(); ++i) {
             const ParametersGrad& param = pack[i];
+            assert(param.param.rows() == param.grad.rows() &&
+                   param.param.cols() == param.grad.cols());
             Matrix delta = param.grad * learning_rate_;
             param.param -= delta;
             old_grad.push_back(delta);
@@ -27,6 +29,7 @@ void SGD::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
     assert(pack.size() == old_grad.size());
     for (size_t i = 0; i < pack.size(); ++i) {
         const ParametersGrad& param = pack[i];
+        assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
         Matrix delta = old_grad[i] * moment_ + param.grad * learning_rate_;
         param.param -= delta;
         old_grad[i] = delta;

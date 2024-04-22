@@ -18,7 +18,7 @@ void Adam::InitParameters(const std::vector<Layer>& layers) {
 
     first_moments_.resize(layers.size());
     second_moments_.resize(layers.size());
-    if (is_fast_start_) {
+    if (!is_fast_start_) {
         cur_beta_1_ = 0;
         cur_beta_2_ = 0;
     } else {
@@ -35,11 +35,12 @@ void Adam::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
         second_moment.resize(pack.size());
         for (size_t i = 0; i < pack.size(); ++i) {
             const ParametersGrad& param = pack[i];
+            assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
             first_moment[i] = (1 - beta_1_) * param.grad;
             second_moment[i] = (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
             param.param -= learning_rate_ *
                            ((first_moment[i] / (1 - cur_beta_1_)).array() /
-                            (((second_moment[i] / (1 - cur_beta_2_)).array() + kEpsilon).sqrt()))
+                            ((second_moment[i] / (1 - cur_beta_2_)).array() + kEpsilon).sqrt())
                                .matrix();
         }
         return;
@@ -48,6 +49,7 @@ void Adam::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
     assert(pack.size() == first_moment.size() && pack.size() == second_moment.size());
     for (size_t i = 0; i < pack.size(); ++i) {
         const ParametersGrad& param = pack[i];
+        assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
         first_moment[i] = beta_1_ * first_moment[i] + (1 - beta_1_) * param.grad;
         second_moment[i] = beta_2_ * second_moment[i] + (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
         param.param -=
