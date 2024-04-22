@@ -14,9 +14,9 @@ std::tuple<Matrix, Matrix, Matrix, Matrix> TrainTestSplit(const Matrix& data, co
         Matrix data_shuffled = perm * data;
         Matrix labels_shuffled = perm * labels;
         return {data_shuffled.topRows(train_size), labels_shuffled.topRows(train_size),
-                data_shuffled.bottomRows(train_size), labels_shuffled.bottomRows(test_size)};
+                data_shuffled.bottomRows(test_size), labels_shuffled.bottomRows(test_size)};
     }
-    return {data.topRows(train_size), labels.topRows(train_size), data.bottomRows(train_size),
+    return {data.topRows(train_size), labels.topRows(train_size), data.bottomRows(test_size),
             labels.bottomRows(test_size)};
 }
 

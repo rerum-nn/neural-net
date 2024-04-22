@@ -4,7 +4,7 @@
 
 namespace neural_net {
 
-BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, size_t batch_size,
+BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, Index batch_size,
                          ShuffleMode mode)
     : data_(data), labels_(labels), batch_size_(batch_size), mode_(mode) {
 }
@@ -18,11 +18,11 @@ BatchSlicer::BatchSlicerIterator BatchSlicer::end() {
     return BatchSlicer::BatchSlicerIterator(&data_, &labels_, data_.rows(), batch_size_);
 }
 
-BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, size_t batch_size, ShuffleMode mode)
+BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, Index batch_size, ShuffleMode mode)
     : data_(std::move(data)), labels_(std::move(labels)), batch_size_(batch_size), mode_(mode) {
 }
 
-void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_size,
+void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, Index batch_size,
                         ShuffleMode mode) {
     data_ = data;
     labels_ = labels;
@@ -30,7 +30,7 @@ void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, size_t batch_s
     mode_ = mode;
 }
 
-void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, size_t batch_size, ShuffleMode mode) {
+void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, Index batch_size, ShuffleMode mode) {
     data_ = std::move(data);
     labels_ = std::move(labels);
     batch_size_ = batch_size_;
@@ -47,7 +47,7 @@ void BatchSlicer::Shuffle() {
 }
 
 BatchSlicer::BatchSlicerIterator::BatchSlicerIterator(const Matrix *data, const Matrix *labels,
-                                                      size_t idx, size_t batch_size)
+                                                      Index idx, Index batch_size)
     : data_(data), labels_(labels), idx_(idx), batch_size_(batch_size) {
     assert(batch_size != 0);
     assert(data != nullptr && labels != nullptr);

@@ -10,8 +10,8 @@ public:
     public:
         using Batch = std::pair<Matrix, Matrix>;
 
-        BatchSlicerIterator(const Matrix* data, const Matrix* labels, size_t idx = 0,
-                            size_t batch_size = 1);
+        BatchSlicerIterator(const Matrix* data, const Matrix* labels, Index idx = 0,
+                            Index batch_size = 1);
 
         Batch operator*() const;
         BatchSlicerIterator& operator++();
@@ -21,18 +21,18 @@ public:
     private:
         const Matrix* data_;
         const Matrix* labels_;
-        size_t idx_;
-        size_t batch_size_;
+        Index idx_;
+        Index batch_size_;
     };
 
-    BatchSlicer(const Matrix& data, const Matrix& labels, size_t batch_size = 1,
+    BatchSlicer(const Matrix& data, const Matrix& labels, Index batch_size = 1,
                 ShuffleMode mode = ShuffleMode::Shuffle);
-    BatchSlicer(Matrix&& data, Matrix&& labels, size_t batch_size = 1,
+    BatchSlicer(Matrix&& data, Matrix&& labels, Index batch_size = 1,
                 ShuffleMode mode = ShuffleMode::Shuffle);
 
-    void Reset(const Matrix& data, const Matrix& labels, size_t batch_size = 1,
+    void Reset(const Matrix& data, const Matrix& labels, Index batch_size = 1,
                ShuffleMode mode = ShuffleMode::Shuffle);
-    void Reset(Matrix&& data, Matrix&& labels, size_t batch_size = 1,
+    void Reset(Matrix&& data, Matrix&& labels, Index batch_size = 1,
                ShuffleMode mode = ShuffleMode::Shuffle);
     void Shuffle();
 
@@ -42,7 +42,7 @@ public:
 private:
     Matrix data_;
     Matrix labels_;
-    size_t batch_size_;
+    Index batch_size_;
     ShuffleMode mode_;
 };
 
