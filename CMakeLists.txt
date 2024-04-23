@@ -5,31 +5,29 @@ project(NeuralNet
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native -fopenmp")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native -fopenmp ")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -funroll-loops -fno-math-errno")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -funroll-loops -fno-math-errno")
 
 set(NEURAL_NET
         src/Layers/Linear.cpp
         src/Sequential.cpp
-        src/Layers/Sigmoid.cpp
+        src/Layers/Activations/Sigmoid.cpp
         src/LossFunctions/MSE.cpp
         src/Utils/Random.cpp
         src/Optimizers/SGD.cpp
         src/LossFunctions/BinaryCrossEntropy.cpp
-        src/Layers/Softmax.cpp
+        src/Layers/Activations/Softmax.cpp
         src/LossFunctions/CategoricalCrossEntropy.cpp
         src/Optimizers/Adam.cpp
         src/Optimizers/Optimizer.cpp
         src/Utils/BatchSlicer.cpp
         src/Utils/DataManipulate.cpp
         src/Datasets/MNIST/MnistDataset.cpp
-        src/Layers/ReLU.cpp
+        src/Layers/Activations/ReLU.cpp
         src/Metrics/Metric.cpp
         src/Utils/Timer.cpp
-        src/Utils/Timer.h
-        src/Layers/Layer.cpp
-)
+        src/Layers/Activations/ActivationNone.cpp)
 set(INCLUDE_DIRECTORIES eigen EigenRand src)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 

@@ -5,7 +5,7 @@ namespace neural_net {
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
 }
 
-void SGD::InitParameters(const std::vector<Layer>& layers) {
+void SGD::InitParameters(const std::vector<Linear>& layers) {
     old_grads_.clear();
     old_grads_.resize(layers.size());
 }

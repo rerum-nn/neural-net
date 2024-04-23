@@ -2,18 +2,17 @@
 
 #include "Types.h"
 
+#include <ostream>
+
 namespace neural_net {
 
-class ReLU {
+class ActivationNone {
 public:
     Matrix Apply(const Matrix& input_data);
-    std::vector<ParametersGrad> GetGradients(const Matrix& loss);
     Matrix BackPropagation(const Matrix& loss) const;
 
     void Serialize(std::ostream& os) const;
 
-private:
-    Matrix computed_data_;
 };
 
 }  // namespace neural_net

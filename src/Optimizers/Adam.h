@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Layers/Layer.h"
+#include "Layers/Linear.h"
 #include "LossFunctions/LossFunction.h"
 #include "Types.h"
 
@@ -13,7 +13,7 @@ public:
     Adam(double lr = 0.03, double beta_1 = 0.9, double beta_2 = 0.999,
          FastStart is_fast_start = FastStart::Enable);
 
-    void InitParameters(const std::vector<Layer>& layers);
+    void InitParameters(const std::vector<Linear>& layers);
     void Update(const std::vector<ParametersGrad>& pack, size_t layer_id);
     void BatchCallback();
     void EpochCallback(size_t epoch, size_t max_epoch);

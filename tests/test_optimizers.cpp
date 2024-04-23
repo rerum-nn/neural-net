@@ -1,4 +1,4 @@
-#include "Layers/Sigmoid.h"
+#include "Layers/Activations/Sigmoid.h"
 #include "Optimizers/Optimizer.h"
 #include "TestHelpers.h"
 #include "Types.h"

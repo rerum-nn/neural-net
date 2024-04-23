@@ -14,10 +14,6 @@ Matrix Softmax::Apply(const Matrix& input_vector) {
     return exp_data_;
 }
 
-std::vector<ParametersGrad> Softmax::GetGradients(const Matrix& loss) {
-    return {};
-}
-
 Matrix Softmax::BackPropagation(const Matrix& loss) const {
     Matrix res(loss.rows(), loss.cols());
     for (Index i = 0; i < loss.rows(); ++i) {

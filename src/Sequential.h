@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Layers/Layer.h"
+#include "Layers/Activations/Activation.h"
+#include "Layers/Linear.h"
 #include "LossFunctions/LossFunction.h"
 #include "LossFunctions/MSE.h"
 #include "Metrics/Metric.h"
@@ -8,10 +9,10 @@
 #include "Optimizers/SGD.h"
 #include "Types.h"
 
+#include <istream>
+#include <ostream>
 #include <string>
 #include <vector>
-#include <ostream>
-#include <istream>
 
 namespace neural_net {
 
@@ -27,7 +28,7 @@ struct FitParameters {
 class Sequential {
 public:
     Sequential() = default;
-    Sequential(std::initializer_list<Layer> layers);
+    Sequential(std::initializer_list<Linear> layers);
 
     Matrix Predict(const Matrix& input_data);
 
@@ -37,16 +38,16 @@ public:
     std::vector<double> Evaluate(const Matrix& input_data, const Matrix& labels,
                                  const LossFunction& loss, std::initializer_list<Metric> metrics);
 
-    Sequential& AddLayer(const Layer& layer);
-    Sequential& AddLayer(Layer&& layer);
+    Sequential& AddLayer(const Linear& layer);
+    Sequential& AddLayer(Linear&& layer);
 
-    std::vector<Layer>& GetLayers();
+    std::vector<Linear>& GetLayers();
 
     void Serialize(std::ostream& os) const;
     void Deserialize(std::istream& is);
 
 private:
-    std::vector<Layer> layers_;
+    std::vector<Linear> layers_;
 };
 
 }  // namespace neural_net

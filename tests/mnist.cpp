@@ -1,7 +1,7 @@
 #include "Datasets/MNIST/MnistDataset.h"
+#include "Layers/Activations/ReLU.h"
+#include "Layers/Activations/Softmax.h"
 #include "Layers/Linear.h"
-#include "Layers/ReLU.h"
-#include "Layers/Softmax.h"
 #include "LossFunctions/CategoricalCrossEntropy.h"
 #include "Metrics/Metric.h"
 #include "Optimizers/Optimizer.h"
@@ -22,11 +22,11 @@ int main() {
     Matrix test_labels = IntLabelsToCategorical(y_test);
 
     std::cout << "start of fitting\n";
-    Sequential sequential({Linear(784, 128), ReLU(), Linear(128, 10), Softmax()});
+    Sequential sequential({Linear(784, 512, ReLU()), Linear(512, 512, ReLU()), Linear(512, 10, Softmax())});
     sequential.Fit(x_train, train_labels,
                    {CategoricalCrossEntropy(),
                     Optimizer::Adam(),
-                    100,
+                    10,
                     64,
                     0.2,
                     {Metric::CategoricalAccuracy()}});

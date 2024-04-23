@@ -11,7 +11,7 @@ Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
       cur_beta_2_(beta_2) {
 }
 
-void Adam::InitParameters(const std::vector<Layer>& layers) {
+void Adam::InitParameters(const std::vector<Linear>& layers) {
     first_moments_.clear();
     second_moments_.clear();
 

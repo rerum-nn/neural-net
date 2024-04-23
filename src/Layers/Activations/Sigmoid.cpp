@@ -10,10 +10,6 @@ Matrix Sigmoid::Apply(const Matrix& input_vector) {
     return res;
 }
 
-std::vector<ParametersGrad> Sigmoid::GetGradients(const Matrix& loss) {
-    return {};
-}
-
 Matrix Sigmoid::BackPropagation(const Matrix& loss) const {
     Matrix derivative = sigmoid_data_.array() * (1 - sigmoid_data_.array());
     return loss.cwiseProduct(derivative.transpose());

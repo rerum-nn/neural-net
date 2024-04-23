@@ -1,7 +1,7 @@
 #include "Datasets/MNIST/MnistDataset.h"
+#include "Layers/Activations/ReLU.h"
+#include "Layers/Activations/Softmax.h"
 #include "Layers/Linear.h"
-#include "Layers/ReLU.h"
-#include "Layers/Softmax.h"
 #include "LossFunctions/CategoricalCrossEntropy.h"
 #include "Metrics/Metric.h"
 #include "Optimizers/Optimizer.h"
@@ -26,5 +26,12 @@ int main() {
     auto test_metrics = sequential.Evaluate(x_test, test_labels, CategoricalCrossEntropy(),
                                             {Metric::CategoricalAccuracy()});
     std::cout << "Loss test: " << test_metrics[0] << " Acc: " << test_metrics[1] << '\n';
+
+    size_t n = 1986;
+    Matrix data = x_test.row(n);
+    Matrix label = y_test.row(n);
+
+    std::cout << "pred: " << sequential.Predict(data) << "  true:" << label << std::endl;
+
 }
 

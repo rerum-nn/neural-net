@@ -1,5 +1,8 @@
 #include "DataManipulate.h"
 
+#include "Layers/Activations/ReLU.h"
+#include "Layers/Activations/Softmax.h"
+#include "Layers/Activations/Sigmoid.h"
 #include "Random.h"
 
 namespace neural_net {
@@ -32,6 +35,48 @@ Matrix IntLabelsToCategorical(const Matrix& labels) {
         categorical_labels(i, int_matrix(i, 0)) = 1;
     }
     return categorical_labels;
+}
+
+Linear DeserializeLayer(std::istream& is) {
+    std::string name;
+    is >> name;
+    if (name == "linear") {
+        Index rows, cols;
+        is >> rows >> cols;
+
+        Matrix weights(rows, cols);
+        Vector bias(rows);
+        for (Index i = 0; i < rows * cols; ++i) {
+            double elem;
+            is >> elem;
+            weights(i / cols, i % cols) = elem;
+        }
+        for (Index i = 0; i < rows; ++i) {
+            double elem;
+            is >> elem;
+            bias[i] = elem;
+        }
+
+        std::string activation_name;
+        is >> activation_name;
+
+        Activation activation = ActivationNone();
+        if (activation_name == "relu") {
+            activation = ReLU();
+        } else if (activation_name == "sigmoid") {
+            activation = Sigmoid();
+        } else if (activation_name == "softmax") {
+            activation = Softmax();
+        } else if (activation_name == "none") {
+            activation = ActivationNone();
+        } else {
+            assert(false && "invalid data of FNN file");
+        }
+
+        return Linear(weights, bias, std::move(activation));
+    } else {
+        assert(false && "invalid data of FNN file");
+    }
 }
 
 }  // namespace neural_net

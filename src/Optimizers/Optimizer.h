@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Layers/Layer.h"
+#include "Layers/Linear.h"
 #include "LossFunctions/LossFunction.h"
 #include "Types.h"
 
@@ -51,7 +51,7 @@ public:
 private:
     class OptimizerConcept {
     public:
-        virtual void InitParameters(const std::vector<Layer>& layers) = 0;
+        virtual void InitParameters(const std::vector<Linear>& layers) = 0;
         virtual void Update(const std::vector<ParametersGrad>& params, size_t layer_id) = 0;
         virtual void BatchCallback() = 0;
         virtual void EpochCallback(size_t epoch, size_t max_epoch) = 0;
@@ -73,7 +73,7 @@ private:
         OptimizerModel(OptimizerT&& func) : optimizer_(std::move(func)) {
         }
 
-        void InitParameters(const std::vector<Layer>& layers) override {
+        void InitParameters(const std::vector<Linear>& layers) override {
             optimizer_.InitParameters(layers);
         }
 

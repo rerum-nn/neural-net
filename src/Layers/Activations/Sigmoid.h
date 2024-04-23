@@ -4,16 +4,15 @@
 
 namespace neural_net {
 
-class Softmax {
+class Sigmoid {
 public:
     Matrix Apply(const Matrix& input_vector);
-    std::vector<ParametersGrad> GetGradients(const Matrix& loss);
     Matrix BackPropagation(const Matrix& loss) const;
 
     void Serialize(std::ostream& os) const;
 
 private:
-    Matrix exp_data_;
+    Matrix sigmoid_data_;
 };
 
 }  // namespace neural_net

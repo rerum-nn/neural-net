@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "Layers/Linear.h"
 
 #include <tuple>
 
@@ -11,5 +12,6 @@ std::tuple<Matrix, Matrix, Matrix, Matrix> TrainTestSplit(const Matrix& data, co
                                                           ShuffleMode mode = ShuffleMode::Shuffle);
 
 Matrix IntLabelsToCategorical(const Matrix& labels);
+Linear DeserializeLayer(std::istream& is);
 
 }  // namespace neural_net

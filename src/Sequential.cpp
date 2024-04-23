@@ -11,14 +11,14 @@
 
 namespace neural_net {
 
-Sequential::Sequential(std::initializer_list<Layer> layers) : layers_(layers) {
+Sequential::Sequential(std::initializer_list<Linear> layers) : layers_(layers) {
 }
 
 Matrix Sequential::Predict(const Matrix& input_data) {
     Matrix iteration = input_data.transpose();
 
-    for (Layer& layer : layers_) {
-        iteration = layer->Apply(iteration);
+    for (Linear& layer : layers_) {
+        iteration = layer.Apply(iteration);
     }
 
     return iteration.transpose();
@@ -36,17 +36,17 @@ std::vector<double> Sequential::Evaluate(const Matrix& input_data, const Matrix&
     return values;
 }
 
-Sequential& Sequential::AddLayer(const Layer& layer) {
+Sequential& Sequential::AddLayer(const Linear& layer) {
     layers_.push_back(layer);
     return *this;
 }
 
-Sequential& Sequential::AddLayer(Layer&& layer) {
+Sequential& Sequential::AddLayer(Linear&& layer) {
     layers_.push_back(std::move(layer));
     return *this;
 }
 
-std::vector<Layer>& Sequential::GetLayers() {
+std::vector<Linear>& Sequential::GetLayers() {
     return layers_;
 }
 
@@ -78,9 +78,10 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
             grads.reserve(layers_.size());
             for (size_t i = 0; i < layers_.size(); ++i) {
                 size_t pos = layers_.size() - 1 - i;
-                Layer& layer = layers_[pos];
-                Matrix next_nabla = layer->BackPropagation(nabla);
-                grads.push_back(layer->GetGradients(nabla));
+                Linear& layer = layers_[pos];
+                nabla = layer.BackPropagationActivation(nabla);
+                Matrix next_nabla = layer.BackPropagation(nabla);
+                grads.push_back(layer.GetGradients(nabla));
                 nabla = next_nabla;
             }
 #pragma omp parallel for
@@ -111,8 +112,8 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
 
 void Sequential::Serialize(std::ostream& os) const {
     os << layers_.size();
-    for (const Layer& layer : layers_) {
-        layer->Serialize(os);
+    for (const Linear& layer : layers_) {
+        layer.Serialize(os);
     }
 }
 
@@ -121,7 +122,7 @@ void Sequential::Deserialize(std::istream& is) {
     is >> size;
     layers_.reserve(size);
     for (size_t i = 0; i < size; ++i) {
-        layers_.push_back(Layer::DeserializeLayer(is));
+        layers_.push_back(DeserializeLayer(is));
     }
 }
 

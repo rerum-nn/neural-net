@@ -1,14 +1,14 @@
+#include "Datasets/MNIST/MnistDataset.h"
+#include "Layers/Activations/ReLU.h"
+#include "Layers/Activations/Sigmoid.h"
+#include "Layers/Activations/Softmax.h"
 #include "Layers/Linear.h"
-#include "Layers/ReLU.h"
-#include "Layers/Sigmoid.h"
-#include "Layers/Softmax.h"
 #include "LossFunctions/BinaryCrossEntropy.h"
+#include "LossFunctions/CategoricalCrossEntropy.h"
 #include "Optimizers/Optimizer.h"
 #include "Sequential.h"
 #include "Types.h"
-#include "Datasets/MNIST/MnistDataset.h"
 #include "Utils/DataManipulate.h"
-#include "LossFunctions/CategoricalCrossEntropy.h"
 
 #include <gtest/gtest.h>
 

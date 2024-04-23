@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Layers/Layer.h"
+#include "Layers/Linear.h"
 #include "LossFunctions/LossFunction.h"
 #include "Types.h"
 
@@ -12,7 +12,7 @@ class SGD {
 public:
     SGD(double lr = 0.01, double momentum = .0);
 
-    void InitParameters(const std::vector<Layer>& layers);
+    void InitParameters(const std::vector<Linear>& layers);
     void Update(const std::vector<ParametersGrad>& pack, size_t layer_id);
     void BatchCallback();
     void EpochCallback(size_t epoch, size_t max_epoch);
