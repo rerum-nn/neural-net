@@ -8,6 +8,7 @@
 #include "Sequential.h"
 #include "Types.h"
 #include "Utils/DataManipulate.h"
+#include "Utils/Timer.h"
 
 #include <fstream>
 #include <iostream>
@@ -22,6 +23,7 @@ int main() {
     Matrix test_labels = IntLabelsToCategorical(y_test);
 
     std::cout << "start of fitting\n";
+    Timer timer;
     Sequential sequential({Linear(784, 512, ReLU()), Linear(512, 512, ReLU()), Linear(512, 10, Softmax())});
     sequential.Fit(x_train, train_labels,
                    {CategoricalCrossEntropy(),
@@ -30,6 +32,8 @@ int main() {
                     64,
                     0.2,
                     {Metric::CategoricalAccuracy()}});
+
+    std::cout << "Total_time: " << timer.GetTimerString() << std::endl;
 
     auto test_metrics = sequential.Evaluate(x_test, test_labels, CategoricalCrossEntropy(),
                                             {Metric::CategoricalAccuracy()});

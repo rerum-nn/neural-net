@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Types.h"
 #include "Layers/Linear.h"
+#include "Types.h"
 
 #include <tuple>
 

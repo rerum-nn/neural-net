@@ -30,11 +30,10 @@ Matrix Linear::Apply(const Matrix& input_data) {
     return activation_->Apply(weights_ * input_data + bias_.replicate(1, input_data.cols()));
 }
 
-std::vector<ParametersGrad> Linear::GetGradients(const Matrix& loss) {
+UpdatePack Linear::GetGradients(const Matrix& loss) {
     assert(weights_.size() > 0 && bias_.size() > 0);
     assert(input_data_.size() != 0 && "input_vector for fit information hasn't been transferred");
-    return {{weights_, (input_data_ * loss).transpose()},
-            {bias_, loss.transpose().rowwise().sum()}};
+    return {weights_, (input_data_ * loss).transpose(), bias_, loss.transpose().rowwise().sum()};
 }
 
 Matrix Linear::BackPropagation(const Matrix& loss) const {

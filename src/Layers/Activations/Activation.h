@@ -14,7 +14,8 @@ private:
 public:
     template <typename ActivationT>
     Activation(ActivationT&& activation)
-        : object_(std::make_unique<ActivationModel<ActivationT>>(std::forward<ActivationT>(activation))) {
+        : object_(std::make_unique<ActivationModel<ActivationT>>(
+              std::forward<ActivationT>(activation))) {
     }
 
     Activation(const Activation& other) : object_(other ? other.object_->Clone() : nullptr) {

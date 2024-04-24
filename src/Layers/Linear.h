@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Types.h"
-
 #include "Activations/Activation.h"
 #include "Activations/ActivationNone.h"
+#include "Types.h"
 
 #include <vector>
 
@@ -15,7 +14,7 @@ public:
     Linear(Matrix weights, Vector bias, Activation&& activation = ActivationNone());
 
     Matrix Apply(const Matrix& input_data);
-    std::vector<ParametersGrad> GetGradients(const Matrix& loss);
+    UpdatePack GetGradients(const Matrix& loss);
     Matrix BackPropagation(const Matrix& loss) const;
     Matrix BackPropagationActivation(const Matrix& loss) const;
 
@@ -27,7 +26,7 @@ public:
 
 private:
     Matrix weights_;
-    Matrix bias_;
+    Vector bias_;
 
     Matrix input_data_;
 

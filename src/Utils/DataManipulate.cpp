@@ -1,8 +1,8 @@
 #include "DataManipulate.h"
 
 #include "Layers/Activations/ReLU.h"
-#include "Layers/Activations/Softmax.h"
 #include "Layers/Activations/Sigmoid.h"
+#include "Layers/Activations/Softmax.h"
 #include "Random.h"
 
 namespace neural_net {

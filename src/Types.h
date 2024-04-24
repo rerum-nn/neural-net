@@ -11,9 +11,16 @@ using Index = Eigen::Index;
 using Array = Eigen::ArrayXXd;
 using PermutationMatrix = Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>;
 
-struct ParametersGrad {
-    Matrix& param;
-    Matrix grad;
+struct UpdatePack {
+    Matrix& weights;
+    Matrix weights_grad;
+    Vector& bias;
+    Vector bias_grad;
+};
+
+struct GradsPack {
+    Matrix weights_grad;
+    Vector bias_grad;
 };
 
 enum class ShuffleMode { Static, Shuffle };

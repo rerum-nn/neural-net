@@ -5,9 +5,9 @@
 #include "Utils/Timer.h"
 
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 namespace neural_net {
 
@@ -67,14 +67,14 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
     Timer timer;
 
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        auto [train_data, train_labels, validate_data, validate_labels] = TrainTestSplit(
-            input_data, labels, (1 - validate_ratio), ShuffleMode::Shuffle);
+        auto [train_data, train_labels, validate_data, validate_labels] =
+            TrainTestSplit(input_data, labels, (1 - validate_ratio), ShuffleMode::Shuffle);
         timer.Reset();
         for (const auto& [batch_data, batch_labels] :
              BatchSlicer(train_data, train_labels, batch_size, ShuffleMode::Static)) {
             Matrix output = Predict(batch_data);
             Matrix nabla = loss->LossGradient(output, batch_labels);
-            std::vector<std::vector<ParametersGrad>> grads;
+            std::vector<UpdatePack> grads;
             grads.reserve(layers_.size());
             for (size_t i = 0; i < layers_.size(); ++i) {
                 size_t pos = layers_.size() - 1 - i;
@@ -87,22 +87,24 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
 #pragma omp parallel for
             for (size_t i = 0; i < grads.size(); ++i) {
                 size_t pos = layers_.size() - 1 - i;
-                optimizer->Update(grads[pos], pos);
+                optimizer->Update(grads[pos], i);
             }
             optimizer->BatchCallback();
         }
         optimizer->EpochCallback(epoch, max_epoch);
 
-        auto end= std::chrono::system_clock::now();
+        auto end = std::chrono::system_clock::now();
 
         Matrix validate_output = Predict(validate_data);
         double loss_value = loss->Loss(validate_output, validate_labels);
         loss_values.push_back(loss_value);
 
-        std::cout << "Epoch [" << epoch << "/" << max_epoch << "] Time: " << timer.GetTimerString() << '\n';
+        std::cout << "Epoch [" << epoch << "/" << max_epoch << "] Time: " << timer.GetTimerString()
+                  << '\n';
         std::cout << "loss: " << loss_value;
         for (const Metric& metric : metrics) {
-            std::cout << ' ' << metric.GetName() << ": " << metric(validate_output, validate_labels);
+            std::cout << ' ' << metric.GetName() << ": "
+                      << metric(validate_output, validate_labels);
         }
         std::cout << "\n\n";
     }

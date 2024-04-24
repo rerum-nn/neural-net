@@ -16,7 +16,7 @@ using namespace neural_net;
 
 int main() {
     Sequential sequential;
-    std::ifstream model_file("model.fnn");
+    std::ifstream model_file("98%.fnn");
     sequential.Deserialize(model_file);
 
     auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();

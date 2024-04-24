@@ -14,7 +14,7 @@ public:
          FastStart is_fast_start = FastStart::Enable);
 
     void InitParameters(const std::vector<Linear>& layers);
-    void Update(const std::vector<ParametersGrad>& pack, size_t layer_id);
+    void Update(const UpdatePack& pack, size_t layer_id);
     void BatchCallback();
     void EpochCallback(size_t epoch, size_t max_epoch);
 
@@ -26,8 +26,8 @@ private:
     double beta_2_;
     bool is_fast_start_;
 
-    std::vector<std::vector<Matrix>> first_moments_;
-    std::vector<std::vector<Matrix>> second_moments_;
+    std::vector<GradsPack> momentums_;
+    std::vector<GradsPack> velocities_;
     double cur_beta_1_;
     double cur_beta_2_;
 };

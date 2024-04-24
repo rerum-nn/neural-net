@@ -12,11 +12,11 @@ Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
 }
 
 void Adam::InitParameters(const std::vector<Linear>& layers) {
-    first_moments_.clear();
-    second_moments_.clear();
+    momentums_.clear();
+    velocities_.clear();
 
-    first_moments_.resize(layers.size());
-    second_moments_.resize(layers.size());
+    momentums_.resize(layers.size());
+    velocities_.resize(layers.size());
     if (!is_fast_start_) {
         cur_beta_1_ = 0;
         cur_beta_2_ = 0;
@@ -24,40 +24,42 @@ void Adam::InitParameters(const std::vector<Linear>& layers) {
         cur_beta_1_ = beta_1_;
         cur_beta_2_ = beta_2_;
     }
+
+    for (size_t i = 0; i < layers.size(); ++i) {
+        momentums_[i].weights_grad.resizeLike(layers[i].GetWeights());
+        momentums_[i].bias_grad.resizeLike(layers[i].GetBias());
+        momentums_[i].weights_grad.setZero();
+        momentums_[i].bias_grad.setZero();
+
+        velocities_[i].weights_grad.resizeLike(layers[i].GetWeights());
+        velocities_[i].bias_grad.resizeLike(layers[i].GetBias());
+        velocities_[i].weights_grad.setZero();
+        velocities_[i].bias_grad.setZero();
+    }
 }
 
-void Adam::Update(const std::vector<ParametersGrad>& pack, size_t layer_id) {
-    std::vector<Matrix>& first_moment = first_moments_[layer_id];
-    std::vector<Matrix>& second_moment = second_moments_[layer_id];
-    if (first_moment.empty() && second_moment.empty()) {
-        first_moment.resize(pack.size());
-        second_moment.resize(pack.size());
-        for (size_t i = 0; i < pack.size(); ++i) {
-            const ParametersGrad& param = pack[i];
-            assert(param.param.rows() == param.grad.rows() &&
-                   param.param.cols() == param.grad.cols());
-            first_moment[i] = (1 - beta_1_) * param.grad;
-            second_moment[i] = (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
-            param.param -= learning_rate_ *
-                           ((first_moment[i] / (1 - cur_beta_1_)).array() /
-                            ((second_moment[i] / (1 - cur_beta_2_)).array() + kEpsilon).sqrt())
-                               .matrix();
-        }
-        return;
-    }
+void Adam::Update(const UpdatePack& pack, size_t layer_id) {
+    GradsPack& momentum = momentums_[layer_id];
+    GradsPack& velocity = velocities_[layer_id];
+    assert(pack.weights.rows() == pack.weights_grad.rows() &&
+           pack.weights.cols() == pack.weights_grad.cols());
+    assert(pack.bias.size() == pack.bias_grad.size());
+    // TODO: add asserts fot velocities and momentums
+    momentum.weights_grad = beta_1_ * momentum.weights_grad + (1 - beta_1_) * pack.weights_grad;
+    velocity.weights_grad = beta_2_ * velocity.weights_grad +
+                            (1 - beta_2_) * pack.weights_grad.cwiseProduct(pack.weights_grad);
+    momentum.bias_grad = beta_1_ * momentum.bias_grad + (1 - beta_1_) * pack.bias_grad;
+    velocity.bias_grad =
+        beta_2_ * velocity.bias_grad + (1 - beta_2_) * pack.bias_grad.cwiseProduct(pack.bias_grad);
 
-    assert(pack.size() == first_moment.size() && pack.size() == second_moment.size());
-    for (size_t i = 0; i < pack.size(); ++i) {
-        const ParametersGrad& param = pack[i];
-        assert(param.param.rows() == param.grad.rows() && param.param.cols() == param.grad.cols());
-        first_moment[i] = beta_1_ * first_moment[i] + (1 - beta_1_) * param.grad;
-        second_moment[i] =
-            beta_2_ * second_moment[i] + (1 - beta_2_) * param.grad.cwiseProduct(param.grad);
-        param.param -=
-            learning_rate_ * ((first_moment[i] / (1 - cur_beta_1_)).array() /
-                              (((second_moment[i] / (1 - cur_beta_2_)).array() + kEpsilon).sqrt()))
-                                 .matrix();
-    }
+    pack.weights -=
+        learning_rate_ * ((momentum.weights_grad / (1 - cur_beta_1_)).array() /
+                          (((velocity.weights_grad / (1 - cur_beta_2_)).array() + kEpsilon).sqrt()))
+                             .matrix();
+    pack.bias -=
+        learning_rate_ * ((momentum.bias_grad / (1 - cur_beta_1_)).array() /
+                          (((velocity.bias_grad / (1 - cur_beta_2_)).array() + kEpsilon).sqrt()))
+                             .matrix();
 }
 
 void Adam::BatchCallback() {

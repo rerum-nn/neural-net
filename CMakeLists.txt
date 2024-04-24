@@ -5,9 +5,9 @@ project(NeuralNet
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native -fopenmp ")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -funroll-loops -fno-math-errno")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -fno-math-errno -fopenmp")
 
 set(NEURAL_NET
         src/Layers/Linear.cpp

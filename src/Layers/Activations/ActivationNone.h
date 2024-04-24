@@ -12,7 +12,6 @@ public:
     Matrix BackPropagation(const Matrix& loss) const;
 
     void Serialize(std::ostream& os) const;
-
 };
 
 }  // namespace neural_net

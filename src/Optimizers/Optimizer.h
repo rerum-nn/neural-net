@@ -52,7 +52,7 @@ private:
     class OptimizerConcept {
     public:
         virtual void InitParameters(const std::vector<Linear>& layers) = 0;
-        virtual void Update(const std::vector<ParametersGrad>& params, size_t layer_id) = 0;
+        virtual void Update(const UpdatePack& params, size_t layer_id) = 0;
         virtual void BatchCallback() = 0;
         virtual void EpochCallback(size_t epoch, size_t max_epoch) = 0;
 
@@ -77,7 +77,7 @@ private:
             optimizer_.InitParameters(layers);
         }
 
-        void Update(const std::vector<ParametersGrad>& params, size_t layer_id) override {
+        void Update(const UpdatePack& params, size_t layer_id) override {
             optimizer_.Update(params, layer_id);
         }
 
