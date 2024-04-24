@@ -10,7 +10,7 @@ namespace neural_net {
 std::tuple<Matrix, Matrix, Matrix, Matrix> TrainTestSplit(const Matrix& data, const Matrix& labels,
                                                           double train_ratio, ShuffleMode mode) {
     assert(data.rows() == labels.rows());
-    size_t train_size = static_cast<int>(data.rows() * train_ratio);
+    size_t train_size = static_cast<size_t>(data.rows() * train_ratio);
     size_t test_size = data.rows() - train_size;
     if (mode == ShuffleMode::Shuffle) {
         PermutationMatrix perm = Random::Permutation(data.rows());

@@ -25,11 +25,16 @@ int main() {
     std::cout << "start of fitting\n";
     Timer timer;
     Sequential sequential(
-        {Linear(784, 512, ReLU()), Linear(512, 512, ReLU()), Linear(512, 10, Softmax())});
+        {Linear(784, 512, ReLU()),
+//         Linear(64, 64, ReLU()),
+//         Linear(1024, 1024, ReLU()),
+         Linear(512, 512, ReLU()),
+         Linear(512, 256, ReLU()),
+         Linear(256, 10, Softmax())});
     sequential.Fit(x_train, train_labels,
                    {CategoricalCrossEntropy(),
                     Optimizer::Adam(),
-                    10,
+                    3,
                     64,
                     0.2,
                     {Metric::CategoricalAccuracy()}});

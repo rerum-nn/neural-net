@@ -14,7 +14,7 @@ Metric Metric::BinaryAccuracy(double threshold) {
     assert(threshold <= 1 && threshold >= 0);
     auto func = [threshold](const Matrix &pred, const Matrix &expected) {
         assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
-        Matrix rounded = pred.unaryExpr([threshold](double d) { return d > threshold ? 1. : 0.; });
+        Matrix rounded = pred.unaryExpr([threshold](float d) { return d > threshold ? 1.f : 0.f; });
         Index right_answers = ((expected - rounded).array() == 0).count();
         return static_cast<double>(right_answers) / pred.rows();
     };

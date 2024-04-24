@@ -66,9 +66,9 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
 
     Timer timer;
 
+    auto [train_data, train_labels, validate_data, validate_labels] =
+        TrainTestSplit(input_data, labels, (1 - validate_ratio), ShuffleMode::Static);
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
-        auto [train_data, train_labels, validate_data, validate_labels] =
-            TrainTestSplit(input_data, labels, (1 - validate_ratio), ShuffleMode::Shuffle);
         timer.Reset();
         for (const auto& [batch_data, batch_labels] :
              BatchSlicer(train_data, train_labels, batch_size, ShuffleMode::Static)) {
@@ -92,16 +92,18 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
             optimizer->BatchCallback();
         }
         optimizer->EpochCallback(epoch, max_epoch);
-        Matrix validate_output = Predict(validate_data);
-        double loss_value = loss->Loss(validate_output, validate_labels);
-        loss_values.push_back(loss_value);
+        std::cout << "Epoch [" << epoch << "/" << max_epoch
+                  << "] Time: " << timer.GetTimerString() << '\n';
+        if (validate_data.size() > 0) {
+            Matrix validate_output = Predict(validate_data);
+            double loss_value = loss->Loss(validate_output, validate_labels);
+            loss_values.push_back(loss_value);
 
-        std::cout << "Epoch [" << epoch << "/" << max_epoch << "] Time: " << timer.GetTimerString()
-                  << '\n';
-        std::cout << "loss: " << loss_value;
-        for (const Metric& metric : metrics) {
-            std::cout << ' ' << metric.GetName() << ": "
-                      << metric(validate_output, validate_labels);
+            std::cout << "loss: " << loss_value;
+            for (const Metric& metric : metrics) {
+                std::cout << ' ' << metric.GetName() << ": "
+                          << metric(validate_output, validate_labels);
+            }
         }
         std::cout << "\n\n";
     }

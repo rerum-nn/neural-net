@@ -3,13 +3,11 @@
 namespace neural_net {
 
 Matrix ReLU::Apply(const Matrix& input_data) {
-    Matrix res = input_data.unaryExpr([](double d) { return std::max(0., d); });
-    computed_data_ = res;
-    return res;
+    return computed_data_ = input_data.unaryExpr([](float d) { return std::max(0.f, d); });
 }
 
 Matrix ReLU::BackPropagation(const Matrix& loss) const {
-    Matrix derivative = computed_data_.unaryExpr([](double d) { return d != 0 ? 1. : 0.; });
+    Matrix derivative = computed_data_.unaryExpr([](float d) { return d != 0 ? 1.f : 0.f; });
     return loss.cwiseProduct(derivative.transpose());
 }
 

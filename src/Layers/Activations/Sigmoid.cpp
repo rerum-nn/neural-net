@@ -5,7 +5,7 @@
 namespace neural_net {
 
 Matrix Sigmoid::Apply(const Matrix& input_vector) {
-    Matrix res = input_vector.unaryExpr([](double d) { return 1. / (1. + std::exp(-d)); });
+    Matrix res = input_vector.unaryExpr([](float d) { return 1.f / (1.f + std::exp(-d)); });
     sigmoid_data_ = res;
     return res;
 }

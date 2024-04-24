@@ -21,8 +21,8 @@ std::pair<Matrix, Matrix> MnistDataset::ReadCsv(const std::string& path) {
         return {};
     }
 
-    std::vector<double> values;
-    std::vector<double> labels;
+    std::vector<float> values;
+    std::vector<float> labels;
     std::string str;
     Index rows = 0;
 

@@ -4,11 +4,11 @@
 
 namespace neural_net {
 
-using Vector = Eigen::VectorXd;
-using RowVector = Eigen::RowVectorXd;
-using Matrix = Eigen::MatrixXd;
+using Vector = Eigen::VectorXf;
+using RowVector = Eigen::RowVectorXf;
+using Matrix = Eigen::MatrixXf;
 using Index = Eigen::Index;
-using Array = Eigen::ArrayXXd;
+using Array = Eigen::ArrayXXf;
 using PermutationMatrix = Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic>;
 
 struct UpdatePack {
