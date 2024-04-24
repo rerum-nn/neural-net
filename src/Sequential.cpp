@@ -92,9 +92,6 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
             optimizer->BatchCallback();
         }
         optimizer->EpochCallback(epoch, max_epoch);
-
-        auto end = std::chrono::system_clock::now();
-
         Matrix validate_output = Predict(validate_data);
         double loss_value = loss->Loss(validate_output, validate_labels);
         loss_values.push_back(loss_value);

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -march=native")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -fno-math-errno -fopenmp")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG -ffast-math -fopenmp")
 
 set(NEURAL_NET
         src/Layers/Linear.cpp
@@ -32,6 +32,7 @@ set(INCLUDE_DIRECTORIES eigen EigenRand src)
 set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
 add_library(NeuralNet ${NEURAL_NET})
+
 target_include_directories(NeuralNet PRIVATE ${INCLUDE_DIRECTORIES})
 
 add_executable(mnist tests/mnist.cpp ${NEURAL_NET})
