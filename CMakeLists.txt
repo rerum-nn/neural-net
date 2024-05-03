@@ -31,6 +31,7 @@ set(NEURAL_NET_HEADERS
         src/Layers/Activations/ReLU.h
         src/LossFunctions/LossFunction.h
         src/LossFunctions/MSE.h
+        src/LossFunctions/MAE.h
         src/LossFunctions/BinaryCrossEntropy.h
         src/LossFunctions/CategoricalCrossEntropy.h
         src/Metrics/Metric.h
@@ -52,6 +53,7 @@ set(NEURAL_NET_SOURCES
         src/Layers/Activations/ReLU.cpp
         src/Layers/Activations/ActivationNone.cpp
         src/LossFunctions/MSE.cpp
+        src/LossFunctions/MAE.cpp
         src/LossFunctions/BinaryCrossEntropy.cpp
         src/LossFunctions/CategoricalCrossEntropy.cpp
         src/Metrics/Metric.cpp
