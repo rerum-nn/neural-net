@@ -1,8 +1,10 @@
 #include "DataManipulate.h"
 
+#include "Layers/Activations/LeakyReLU.h"
 #include "Layers/Activations/ReLU.h"
 #include "Layers/Activations/Sigmoid.h"
 #include "Layers/Activations/Softmax.h"
+#include "Layers/Activations/Tanh.h"
 #include "Random.h"
 
 namespace neural_net {
@@ -63,8 +65,12 @@ Linear DeserializeLayer(std::istream& is) {
         Activation activation = ActivationNone();
         if (activation_name == "relu") {
             activation = ReLU();
+        } else if (activation_name == "leakyrelu") {
+            activation = LeakyReLU();
         } else if (activation_name == "sigmoid") {
             activation = Sigmoid();
+        } else if (activation_name == "tanh") {
+            activation = Tanh();
         } else if (activation_name == "softmax") {
             activation = Softmax();
         } else if (activation_name == "none") {

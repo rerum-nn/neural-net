@@ -43,7 +43,7 @@ public:
 private:
     class ActivationConcept {
     public:
-        virtual Matrix Apply(const Matrix& data_vector) = 0;
+        virtual Matrix Apply(const Matrix& input_data) = 0;
         virtual Matrix BackPropagation(const Matrix& loss) const = 0;
 
         virtual void Serialize(std::ostream& os) const = 0;
@@ -65,8 +65,8 @@ private:
         ActivationModel(ActivationT&& func) : activation_(std::move(func)) {
         }
 
-        Matrix Apply(const Matrix& data_vector) override {
-            return activation_.Apply(data_vector);
+        Matrix Apply(const Matrix& input_data) override {
+            return activation_.Apply(input_data);
         }
 
         Matrix BackPropagation(const Matrix& loss) const override {

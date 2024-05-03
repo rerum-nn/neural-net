@@ -7,7 +7,7 @@ Matrix ReLU::Apply(const Matrix& input_data) {
 }
 
 Matrix ReLU::BackPropagation(const Matrix& loss) const {
-    Matrix derivative = computed_data_.unaryExpr([](float d) { return d != 0 ? 1.f : 0.f; });
+    Matrix derivative = computed_data_.unaryExpr([](float d) { return d >= 0 ? 1.f : 0.f; });
     return loss.cwiseProduct(derivative.transpose());
 }
 

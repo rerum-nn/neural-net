@@ -2,13 +2,13 @@
 
 namespace neural_net {
 
-Matrix Softmax::Apply(const Matrix& input_vector) {
-    assert(input_vector.size() > 0);
-    double mx = input_vector.maxCoeff();
-    Matrix transformed = (input_vector.array() - mx).exp();
+Matrix Softmax::Apply(const Matrix& input_data) {
+    assert(input_data.size() > 0);
+    double mx = input_data.maxCoeff();
+    Matrix transformed = (input_data.array() - mx).exp();
     Vector sums = transformed.colwise().sum();
-    exp_data_.resize(input_vector.rows(), input_vector.cols());
-    for (Index i = 0; i < input_vector.cols(); ++i) {
+    exp_data_.resize(input_data.rows(), input_data.cols());
+    for (Index i = 0; i < input_data.cols(); ++i) {
         exp_data_.col(i) = transformed.col(i) / sums[i];
     }
     return exp_data_;

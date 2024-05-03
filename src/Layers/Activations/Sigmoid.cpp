@@ -4,8 +4,8 @@
 
 namespace neural_net {
 
-Matrix Sigmoid::Apply(const Matrix& input_vector) {
-    sigmoid_data_ = input_vector.unaryExpr([](float d) { return 1.f / (1.f + std::exp(-d)); });
+Matrix Sigmoid::Apply(const Matrix& input_data) {
+    sigmoid_data_ = input_data.unaryExpr([](float d) { return 1.f / (1.f + std::exp(-d)); });
     return sigmoid_data_;
 }
 

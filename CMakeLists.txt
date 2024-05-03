@@ -30,6 +30,7 @@ set(NEURAL_NET_HEADERS
         src/Layers/Activations/Tanh.h
         src/Layers/Activations/Softmax.h
         src/Layers/Activations/ReLU.h
+        src/Layers/Activations/LeakyReLU.h
         src/LossFunctions/LossFunction.h
         src/LossFunctions/MSE.h
         src/LossFunctions/MAE.h
@@ -53,6 +54,7 @@ set(NEURAL_NET_SOURCES
         src/Layers/Activations/Tanh.cpp
         src/Layers/Activations/Softmax.cpp
         src/Layers/Activations/ReLU.cpp
+        src/Layers/Activations/LeakyReLU.cpp
         src/Layers/Activations/ActivationNone.cpp
         src/LossFunctions/MSE.cpp
         src/LossFunctions/MAE.cpp

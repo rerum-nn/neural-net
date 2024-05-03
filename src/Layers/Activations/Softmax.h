@@ -6,7 +6,7 @@ namespace neural_net {
 
 class Softmax {
 public:
-    Matrix Apply(const Matrix& input_vector);
+    Matrix Apply(const Matrix& input_data);
     Matrix BackPropagation(const Matrix& loss) const;
 
     void Serialize(std::ostream& os) const;
