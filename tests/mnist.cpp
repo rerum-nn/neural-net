@@ -16,7 +16,14 @@
 using namespace neural_net;
 
 int main() {
-    omp_set_num_threads(6);
+#ifdef _OPENMP
+#ifndef THREADS
+        omp_set_num_threads(omp_get_num_procs());
+#else
+        omp_set_num_threads(THREADS);
+        std::cout << "Number of threads used: " << THREADS << std::endl;
+#endif
+#endif
 
     auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();
     Matrix train_labels = IntLabelsToCategorical(y_train);
@@ -25,18 +32,15 @@ int main() {
     std::cout << "start of fitting\n";
     Timer timer;
     Sequential sequential(
-        {Linear(784, 512, ReLU()),
-//         Linear(64, 64, ReLU()),
-//         Linear(1024, 1024, ReLU()),
-         Linear(512, 512, ReLU()),
-         Linear(512, 256, ReLU()),
-         Linear(256, 10, Softmax())});
+        {Linear(784, 64, ReLU()),
+         Linear(64, 64, ReLU()),
+         Linear(64, 10, Softmax())});
     sequential.Fit(x_train, train_labels,
                    {CategoricalCrossEntropy(),
                     Optimizer::Adam(),
-                    3,
-                    64,
-                    0.2,
+                    10,
+                    32,
+                    0,
                     {Metric::CategoricalAccuracy()}});
 
     std::cout << "Total_time: " << timer.GetTimerString() << std::endl;

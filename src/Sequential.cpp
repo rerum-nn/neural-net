@@ -57,7 +57,7 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
     const std::vector<Metric>& metrics = fit_parameters.metrics;
     size_t max_epoch = fit_parameters.max_epoch;
     size_t batch_size = fit_parameters.batch_size;
-    double validate_ratio = fit_parameters.validate_ratio;
+    float validate_ratio = fit_parameters.validate_ratio;
 
     std::vector<double> loss_values;
     loss_values.reserve(max_epoch);

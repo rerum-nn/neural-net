@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.10)
+project(NeuralNet-tests LANGUAGES CXX)
+
+if(${PROJECT_IS_TOP_LEVEL})
+    enable_testing()
+    find_package(NeuralNet REQUIRED)
+endif ()
+
+set(TEST_SOURCES
+        trash_tests.cpp
+        test_metrics.cpp
+        test_optimizers.cpp
+        test_layers.cpp
+        test_deserialize.cpp
+)
+
+function(add_test_executable TEST_NAME)
+    add_executable(${TEST_NAME} ${ARGN})
+    target_include_directories(${TEST_NAME} PRIVATE ${GOOGLE_TEST_INCLUDE_DIRS})
+    target_link_libraries(${TEST_NAME} gtest_main gmock_main NeuralNet::NeuralNet)
+endfunction()
+
+foreach (TEST_SOURCE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    add_test_executable(${TEST_NAME} ${TEST_SOURCE})
+endforeach()
+
+if(DEFINED THREADS)
+    add_definitions(-DTHREADS={THREADS})
+endif()
+add_executable(mnist mnist.cpp)
+target_link_libraries(mnist NeuralNet::NeuralNet)
+

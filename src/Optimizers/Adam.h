@@ -21,15 +21,15 @@ public:
 private:
     static constexpr double kEpsilon = 1e-8;
 
-    double learning_rate_;
-    double beta_1_;
-    double beta_2_;
+    float learning_rate_;
+    float beta_1_;
+    float beta_2_;
     bool is_fast_start_;
 
     std::vector<GradsPack> momentums_;
     std::vector<GradsPack> velocities_;
-    double cur_beta_1_;
-    double cur_beta_2_;
+    float cur_beta_1_;
+    float cur_beta_2_;
 };
 
 }  // namespace neural_net

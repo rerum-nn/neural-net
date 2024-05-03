@@ -3,8 +3,6 @@
 #include "EigenRand/EigenRand"
 #include "Types.h"
 
-#include <random>
-
 namespace neural_net {
 
 class Random {
