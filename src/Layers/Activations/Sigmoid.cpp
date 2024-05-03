@@ -5,9 +5,8 @@
 namespace neural_net {
 
 Matrix Sigmoid::Apply(const Matrix& input_vector) {
-    Matrix res = input_vector.unaryExpr([](float d) { return 1.f / (1.f + std::exp(-d)); });
-    sigmoid_data_ = res;
-    return res;
+    sigmoid_data_ = input_vector.unaryExpr([](float d) { return 1.f / (1.f + std::exp(-d)); });
+    return sigmoid_data_;
 }
 
 Matrix Sigmoid::BackPropagation(const Matrix& loss) const {

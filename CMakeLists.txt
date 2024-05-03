@@ -27,6 +27,7 @@ set(NEURAL_NET_HEADERS
         src/Layers/Activations/Activation.h
         src/Layers/Activations/ActivationNone.h
         src/Layers/Activations/Sigmoid.h
+        src/Layers/Activations/Tanh.h
         src/Layers/Activations/Softmax.h
         src/Layers/Activations/ReLU.h
         src/LossFunctions/LossFunction.h
@@ -49,6 +50,7 @@ set(NEURAL_NET_SOURCES
         src/Datasets/MNIST/MnistDataset.cpp
         src/Layers/Linear.cpp
         src/Layers/Activations/Sigmoid.cpp
+        src/Layers/Activations/Tanh.cpp
         src/Layers/Activations/Softmax.cpp
         src/Layers/Activations/ReLU.cpp
         src/Layers/Activations/ActivationNone.cpp
