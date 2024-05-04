@@ -14,12 +14,12 @@ Metric Metric::BinaryAccuracy(double threshold) {
     assert(threshold <= 1 && threshold >= 0);
     auto func = [threshold](const Matrix &pred, const Matrix &expected) {
         assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
-        Matrix rounded = pred.unaryExpr([threshold](float d) { return d > threshold ? 1.f : 0.f; });
+        Matrix rounded = pred.unaryExpr([threshold](float d) { return d >= threshold ? 1.f : 0.f; });
         Index right_answers = ((expected - rounded).array() == 0).count();
         return static_cast<double>(right_answers) / pred.rows();
     };
 
-    return Metric(func, "binary_acc");
+    return Metric(func, "bin_acc");
 }
 
 Metric Metric::CategoricalAccuracy() {
@@ -42,11 +42,46 @@ Metric Metric::CategoricalAccuracy() {
         return static_cast<double>(right_answers) / pred.rows();
     };
 
-    return Metric(func, "categorical_acc");
+    return Metric(func, "cat_acc");
 }
 
 std::string Metric::GetName() const {
     return name_;
+}
+
+Metric Metric::BinaryPrecision(double threshold) {
+    assert(threshold <= 1 && threshold >= 0);
+    auto func = [threshold](const Matrix &pred, const Matrix &expected) {
+        assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
+        Matrix rounded = pred.unaryExpr([threshold](float d) { return d >= threshold ? 1.f : 0.f; });
+        Index tp = ((expected + rounded).array() == 2).count();
+        return static_cast<double>(tp) / (pred.array() == 1).count();
+    };
+    return Metric(func, "bin_precision");
+}
+
+Metric Metric::BinaryRecall(double threshold) {
+    assert(threshold <= 1 && threshold >= 0);
+    auto func = [threshold](const Matrix &pred, const Matrix &expected) {
+        assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
+        Matrix rounded = pred.unaryExpr([threshold](float d) { return d >= threshold ? 1.f : 0.f; });
+        Index tp = ((expected + rounded).array() == 2).count();
+        return static_cast<double>(tp) / (expected.array() == 1).count();
+    };
+    return Metric(func, "bin_recall");
+}
+
+Metric Metric::F1Score(double threshold) {
+    assert(threshold <= 1 && threshold >= 0);
+    auto func = [threshold](const Matrix &pred, const Matrix &expected) {
+        assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
+        Matrix rounded = pred.unaryExpr([threshold](float d) { return d >= threshold ? 1.f : 0.f; });
+        Index tp = ((expected + rounded).array() == 2).count();
+        double precision = static_cast<double>(tp) / (pred.array() == 1).count();
+        double recall = static_cast<double>(tp) / (expected.array() == 1).count();
+        return 2 * (precision + recall) / (precision * recall);
+    };
+    return Metric(func, "f1-score");
 }
 
 }  // namespace neural_net

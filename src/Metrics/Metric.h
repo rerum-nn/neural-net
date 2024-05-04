@@ -9,6 +9,10 @@ public:
     static Metric BinaryAccuracy(double threshold = 0.5);
     static Metric CategoricalAccuracy();
 
+    static Metric BinaryPrecision(double threshold = 0.5);
+    static Metric BinaryRecall(double threshold = 0.5);
+    static Metric F1Score(double threshold = 0.5);
+
     double operator()(const Matrix& pred, const Matrix& expected) const;
 
     std::string GetName() const;
