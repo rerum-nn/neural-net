@@ -17,7 +17,7 @@ Optimizer Optimizer::AdaGrad(double lr) {
     return neural_net::Adam(lr, 0, 0, neural_net::Adam::FastStart::Disable);
 }
 
-Optimizer Optimizer::RMSProp(double lr, double rho) {
+Optimizer Optimizer::RMSprop(double lr, double rho) {
     return neural_net::Adam(lr, 0, rho, neural_net::Adam::FastStart::Disable);
 }
 

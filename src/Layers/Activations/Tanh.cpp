@@ -10,7 +10,7 @@ Matrix Tanh::Apply(const Matrix& input_data) {
 
 Matrix Tanh::BackPropagation(const Matrix& loss) const {
     assert(loss.size() > 0);
-    return 1 - tanh_data_.cwiseProduct(tanh_data_).array();
+    return loss.array() * (1 - tanh_data_.cwiseProduct(tanh_data_).array()).transpose();
 }
 
 void Tanh::Serialize(std::ostream& os) const {

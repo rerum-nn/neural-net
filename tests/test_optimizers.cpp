@@ -40,7 +40,7 @@ TEST(Adam, SingleStep) {
 }
 
 TEST(RMSProp, SingleStep) {
-    Optimizer rmsprop = Optimizer::RMSProp(0.5);
+    Optimizer rmsprop = Optimizer::RMSprop(0.5);
     Matrix vars{{1.0, 2.0, 3.0, 4.0}};
     ParametersGrad grads{vars, Matrix{{1.0, 6.0, 7.0, 2.0}}};
     rmsprop->InitParameters({Sigmoid()});

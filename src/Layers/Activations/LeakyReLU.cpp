@@ -13,7 +13,7 @@ Matrix LeakyReLU::Apply(const Matrix& input_data) {
 
 Matrix LeakyReLU::BackPropagation(const Matrix& loss) const {
     assert(loss.size() > 0);
-    Matrix derivative = computed_data_.unaryExpr([this](float d) { return d >= 0 ? 1.f : alpha_; });
+    Matrix derivative = computed_data_.unaryExpr([this](float d) { return d > 0 ? 1.f : (d < 0 ? alpha_ : 0); });
     return loss.cwiseProduct(derivative.transpose());
 }
 

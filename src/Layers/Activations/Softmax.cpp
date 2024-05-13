@@ -1,4 +1,5 @@
 #include "Softmax.h"
+#include <iostream>
 
 namespace neural_net {
 
@@ -9,7 +10,7 @@ Matrix Softmax::Apply(const Matrix& input_data) {
     Vector sums = transformed.colwise().sum();
     exp_data_.resize(input_data.rows(), input_data.cols());
     for (Index i = 0; i < input_data.cols(); ++i) {
-        exp_data_.col(i) = transformed.col(i) / sums[i];
+        exp_data_.col(i) = transformed.col(i) / (sums[i] + kEpsilon);
     }
     return exp_data_;
 }

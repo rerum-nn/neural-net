@@ -12,6 +12,8 @@ public:
     void Serialize(std::ostream& os) const;
 
 private:
+    static constexpr double kEpsilon = 1e-7;
+
     Matrix exp_data_;
 };
 
