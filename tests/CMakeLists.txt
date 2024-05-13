@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(NeuralNet-tests LANGUAGES CXX)
 
 set(TEST_SOURCES
-        trash_tests.cpp
+        mnist.cpp
         test_metrics.cpp
         test_optimizers.cpp
         test_layers.cpp
@@ -24,6 +24,3 @@ endforeach()
 if(DEFINED THREADS)
     add_definitions(-DTHREADS={THREADS})
 endif()
-add_executable(mnist mnist.cpp)
-target_link_libraries(mnist NeuralNet::NeuralNet)
-

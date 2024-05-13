@@ -1,10 +1,6 @@
 #include "Datasets/MNIST/MnistDataset.h"
-#include "Layers/Activations/ReLU.h"
-#include "Layers/Activations/Softmax.h"
-#include "Layers/Linear.h"
 #include "LossFunctions/CategoricalCrossEntropy.h"
 #include "Metrics/Metric.h"
-#include "Optimizers/Optimizer.h"
 #include "Sequential.h"
 #include "Types.h"
 #include "Utils/DataManipulate.h"
@@ -14,9 +10,13 @@
 
 using namespace neural_net;
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cout << "./test_deserialize /path/to/model.fnn\n";
+        return 1;
+    }
     Sequential sequential;
-    std::ifstream model_file("98%.fnn");
+    std::ifstream model_file(argv[1]);
     sequential.Deserialize(model_file);
 
     auto [x_train, y_train, x_test, y_test] = MnistDataset().LoadData();
