@@ -41,7 +41,7 @@ public:
 private:
     class LossConcept {
     public:
-        virtual double Loss(const Matrix& present, const Matrix& expected) const = 0;
+        virtual float Loss(const Matrix& present, const Matrix& expected) const = 0;
         virtual Matrix LossGradient(const Matrix& present, const Matrix& expected) const = 0;
 
         virtual ~LossConcept() = default;
@@ -60,7 +60,7 @@ private:
         LossModel(LossT&& loss) : loss_(std::move(loss)) {
         }
 
-        double Loss(const Matrix& present, const Matrix& expected) const override {
+        float Loss(const Matrix& present, const Matrix& expected) const override {
             return loss_.Loss(present, expected);
         }
 

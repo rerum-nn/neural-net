@@ -7,6 +7,7 @@ set(TEST_SOURCES
         test_optimizers.cpp
         test_layers.cpp
         test_deserialize.cpp
+        test_loss.cpp
 )
 set(GOOGLE_TEST_INCLUDE_DIRS ../googletest/googlemock/include ../googletest/googletest/include)
 

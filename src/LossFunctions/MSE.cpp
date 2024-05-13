@@ -4,7 +4,7 @@
 
 namespace neural_net {
 
-double MSE::Loss(const Matrix& present, const Matrix& expected) const {
+float MSE::Loss(const Matrix& present, const Matrix& expected) const {
     assert(present.cols() == expected.cols() && present.rows() == expected.rows());
     double norm = (expected - present).norm();
     return norm * norm / present.size();

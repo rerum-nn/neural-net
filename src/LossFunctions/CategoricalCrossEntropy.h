@@ -6,7 +6,7 @@ namespace neural_net {
 
 class CategoricalCrossEntropy {
 public:
-    double Loss(const Matrix& present, const Matrix& expected) const;
+    float Loss(const Matrix& present, const Matrix& expected) const;
     Matrix LossGradient(const Matrix& present, const Matrix& expected) const;
 
 private:

@@ -2,7 +2,7 @@
 
 namespace neural_net {
 
-double MAE::Loss(const Matrix& present, const Matrix& expected) const {
+float MAE::Loss(const Matrix& present, const Matrix& expected) const {
     assert(present.cols() == expected.cols() && present.rows() == expected.rows());
     return (expected - present).cwiseAbs().sum() / expected.size();
 }
