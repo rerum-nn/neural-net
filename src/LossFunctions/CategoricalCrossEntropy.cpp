@@ -3,10 +3,12 @@
 namespace neural_net {
 
 double CategoricalCrossEntropy::Loss(const Matrix& present, const Matrix& expected) const {
+    assert(present.cols() == expected.cols() && present.rows() == expected.rows());
     return -(expected.array() * (present.array() + kEpsilon).log()).sum() / present.rows();
 }
 
 Matrix CategoricalCrossEntropy::LossGradient(const Matrix& present, const Matrix& expected) const {
+    assert(present.cols() == expected.cols() && present.rows() == expected.rows());
     return -expected.array() / (present.array() + kEpsilon) / present.rows();
 }
 

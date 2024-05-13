@@ -32,16 +32,15 @@ int main() {
     std::cout << "start of fitting\n";
     Timer timer;
     Sequential sequential(
-        {Linear(784, 64, ReLU()),
-         Linear(64, 64, ReLU()),
-         Linear(64, 10, Softmax())});
+        {Linear(784, 512, ReLU()),
+         Linear(512, 10, Softmax())});
     sequential.Fit(x_train, train_labels,
-                   {CategoricalCrossEntropy(),
-                    Optimizer::Adam(),
-                    10,
-                    32,
-                    0,
-                    {Metric::CategoricalAccuracy()}});
+                   {.loss = CategoricalCrossEntropy(),
+                    .optimizer = Optimizer::Adam(),
+                    .max_epoch = 20,
+                    .batch_size = 128,
+                    .validate_ratio = 0.2,
+                    .metrics = {Metric::CategoricalAccuracy()}});
 
     std::cout << "Total_time: " << timer.GetTimerString() << std::endl;
 

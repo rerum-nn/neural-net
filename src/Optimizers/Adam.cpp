@@ -9,6 +9,9 @@ Adam::Adam(double lr, double beta_1, double beta_2, FastStart is_fast_start)
       is_fast_start_(is_fast_start == FastStart::Enable),
       cur_beta_1_(beta_1),
       cur_beta_2_(beta_2) {
+    assert(learning_rate_ > 0);
+    assert(0 <= beta_1 && beta_1 < 1);
+    assert(0 <= beta_2 && beta_2 < 1);
 }
 
 void Adam::InitParameters(const std::vector<Linear>& layers) {
@@ -39,12 +42,20 @@ void Adam::InitParameters(const std::vector<Linear>& layers) {
 }
 
 void Adam::Update(const UpdatePack& pack, size_t layer_id) {
+    assert(layer_id < momentums_.size());
     GradsPack& momentum = momentums_[layer_id];
     GradsPack& velocity = velocities_[layer_id];
+
     assert(pack.weights.rows() == pack.weights_grad.rows() &&
            pack.weights.cols() == pack.weights_grad.cols());
     assert(pack.bias.size() == pack.bias_grad.size());
-    // TODO: add asserts fot velocities and momentums
+    assert(momentum.weights_grad.cols() == pack.weights_grad.cols() &&
+           momentum.weights_grad.rows() == pack.weights_grad.rows());
+    assert(velocity.weights_grad.cols() == pack.weights_grad.cols() &&
+           velocity.weights_grad.rows() == pack.weights_grad.rows());
+    assert(momentum.bias_grad.size() == pack.bias_grad.size());
+    assert(velocity.bias_grad.size() == pack.bias_grad.size());
+
     momentum.weights_grad = beta_1_ * momentum.weights_grad + (1 - beta_1_) * pack.weights_grad;
     velocity.weights_grad = beta_2_ * velocity.weights_grad +
                             (1 - beta_2_) * pack.weights_grad.cwiseProduct(pack.weights_grad);

@@ -3,6 +3,7 @@
 namespace neural_net {
 
 double BinaryCrossEntropy::Loss(const Matrix& present, const Matrix& expected) const {
+    assert(present.rows() == expected.rows());
     assert(present.cols() == 1 && expected.cols() == 1 &&
            "it should be output layer size equal 1 for binarycrossentropy loss function");
     Array present_array = present.array();
@@ -13,6 +14,7 @@ double BinaryCrossEntropy::Loss(const Matrix& present, const Matrix& expected) c
 }
 
 Matrix BinaryCrossEntropy::LossGradient(const Matrix& present, const Matrix& expected) const {
+    assert(present.rows() == expected.rows());
     assert(present.cols() == 1 && expected.cols() == 1 &&
            "it should be output layer size equal 1 for binarycrossentropy loss function");
     Array present_array = present.array();

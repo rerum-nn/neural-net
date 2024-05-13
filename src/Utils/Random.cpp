@@ -15,7 +15,8 @@ Matrix Random::Normal(Index rows, Index cols) {
 }
 
 Matrix Random::NormalImpl(Index rows, Index cols) {
-    return Eigen::Rand::normal<Matrix>(rows, cols, generator_);
+    Matrix matrix = Eigen::Rand::normal<Matrix>(rows, cols, generator_);
+    return matrix / matrix.norm();
 }
 
 PermutationMatrix Random::Permutation(Index size) {

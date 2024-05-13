@@ -67,11 +67,12 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
     Timer timer;
 
     auto [train_data, train_labels, validate_data, validate_labels] =
-        TrainTestSplit(input_data, labels, (1 - validate_ratio), ShuffleMode::Static);
+        TrainTestSplit(input_data, labels, (1 - validate_ratio), ShuffleMode::Shuffle);
+
+    BatchSlicer batch_slicer = BatchSlicer(train_data, train_labels, batch_size);
     for (size_t epoch = 1; epoch <= max_epoch; ++epoch) {
         timer.Reset();
-        for (const auto& [batch_data, batch_labels] :
-             BatchSlicer(train_data, train_labels, batch_size, ShuffleMode::Static)) {
+        for (const auto& [batch_data, batch_labels] : batch_slicer) {
             Matrix output = Predict(batch_data);
             Matrix nabla = loss->LossGradient(output, batch_labels);
             std::vector<UpdatePack> grads;

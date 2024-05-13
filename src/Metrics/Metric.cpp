@@ -71,7 +71,7 @@ Metric Metric::BinaryRecall(double threshold) {
     return Metric(func, "bin_recall");
 }
 
-Metric Metric::F1Score(double threshold) {
+Metric Metric::BinaryF1Score(double threshold) {
     assert(threshold <= 1 && threshold >= 0);
     auto func = [threshold](const Matrix &pred, const Matrix &expected) {
         assert(pred.rows() == expected.rows() && pred.cols() == 1 && expected.cols() == 1);
@@ -81,7 +81,7 @@ Metric Metric::F1Score(double threshold) {
         double recall = static_cast<double>(tp) / (expected.array() == 1).count();
         return 2 * (precision + recall) / (precision * recall);
     };
-    return Metric(func, "f1-score");
+    return Metric(func, "bin_f1-score");
 }
 
 }  // namespace neural_net

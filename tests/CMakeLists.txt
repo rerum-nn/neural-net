@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(NeuralNet-tests LANGUAGES CXX)
 
-if(${PROJECT_IS_TOP_LEVEL})
-    enable_testing()
-    find_package(NeuralNet REQUIRED)
-endif ()
-
 set(TEST_SOURCES
         trash_tests.cpp
         test_metrics.cpp
@@ -13,6 +8,7 @@ set(TEST_SOURCES
         test_layers.cpp
         test_deserialize.cpp
 )
+set(GOOGLE_TEST_INCLUDE_DIRS ../googletest/googlemock/include ../googletest/googletest/include)
 
 function(add_test_executable TEST_NAME)
     add_executable(${TEST_NAME} ${ARGN})

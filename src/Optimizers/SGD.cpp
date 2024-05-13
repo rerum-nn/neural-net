@@ -3,6 +3,8 @@
 namespace neural_net {
 
 SGD::SGD(double lr, double momentum) : learning_rate_(lr), moment_(momentum) {
+    assert(learning_rate_ > 0);
+    assert(moment_ >= 0);
 }
 
 void SGD::InitParameters(const std::vector<Linear>& layers) {
@@ -17,11 +19,16 @@ void SGD::InitParameters(const std::vector<Linear>& layers) {
 }
 
 void SGD::Update(const UpdatePack& pack, size_t layer_id) {
+    assert(layer_id < old_grads_.size());
     GradsPack& old_grad = old_grads_[layer_id];
+
     assert(pack.weights.rows() == pack.weights_grad.rows() &&
            pack.weights.cols() == pack.weights_grad.cols());
     assert(pack.bias.size() == pack.bias_grad.size());
-    // TODO: add asserts fot old grad
+    assert(old_grad.weights_grad.cols() == pack.weights_grad.cols() &&
+           old_grad.weights_grad.rows() == pack.weights_grad.rows());
+    assert(old_grad.bias_grad.size() == pack.bias_grad.size());
+
     old_grad.weights_grad = old_grad.weights_grad * moment_ + pack.weights_grad * learning_rate_;
     old_grad.bias_grad = old_grad.bias_grad * moment_ + pack.bias_grad * learning_rate_;
 

@@ -16,9 +16,10 @@ std::tuple<Matrix, Matrix, Matrix, Matrix> MnistDataset::LoadData() {
 std::pair<Matrix, Matrix> MnistDataset::ReadCsv(const std::string& path) {
     std::ifstream csv;
     csv.open(path);
+    assert(csv);
     if (!csv) {
         std::cerr << path << " file can't be opened\n";
-        return {};
+        exit(1);
     }
 
     std::vector<float> values;
@@ -28,7 +29,7 @@ std::pair<Matrix, Matrix> MnistDataset::ReadCsv(const std::string& path) {
 
     if (!std::getline(csv, str)) {
         std::cerr << path << " file is empty\n";
-        return {};
+        exit(1);
     }
 
     while (std::getline(csv, str)) {

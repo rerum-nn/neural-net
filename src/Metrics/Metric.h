@@ -11,7 +11,7 @@ public:
 
     static Metric BinaryPrecision(double threshold = 0.5);
     static Metric BinaryRecall(double threshold = 0.5);
-    static Metric F1Score(double threshold = 0.5);
+    static Metric BinaryF1Score(double threshold = 0.5);
 
     double operator()(const Matrix& pred, const Matrix& expected) const;
 

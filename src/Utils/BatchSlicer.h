@@ -25,15 +25,11 @@ public:
         Index batch_size_;
     };
 
-    BatchSlicer(const Matrix& data, const Matrix& labels, Index batch_size = 1,
-                ShuffleMode mode = ShuffleMode::Shuffle);
-    BatchSlicer(Matrix&& data, Matrix&& labels, Index batch_size = 1,
-                ShuffleMode mode = ShuffleMode::Shuffle);
+    BatchSlicer(const Matrix& data, const Matrix& labels, Index batch_size = 1);
+    BatchSlicer(Matrix&& data, Matrix&& labels, Index batch_size = 1);
 
-    void Reset(const Matrix& data, const Matrix& labels, Index batch_size = 1,
-               ShuffleMode mode = ShuffleMode::Shuffle);
-    void Reset(Matrix&& data, Matrix&& labels, Index batch_size = 1,
-               ShuffleMode mode = ShuffleMode::Shuffle);
+    void Reset(const Matrix& data, const Matrix& labels, Index batch_size = 1);
+    void Reset(Matrix&& data, Matrix&& labels, Index batch_size = 1);
     void Shuffle();
 
     BatchSlicerIterator begin();
@@ -43,7 +39,6 @@ private:
     Matrix data_;
     Matrix labels_;
     Index batch_size_;
-    ShuffleMode mode_;
 };
 
 }  // namespace neural_net

@@ -15,6 +15,7 @@ Matrix Softmax::Apply(const Matrix& input_data) {
 }
 
 Matrix Softmax::BackPropagation(const Matrix& loss) const {
+    assert(loss.size() > 0);
     Matrix res(loss.rows(), loss.cols());
     for (Index i = 0; i < loss.rows(); ++i) {
         Matrix delta = exp_data_.col(i).asDiagonal().toDenseMatrix() -

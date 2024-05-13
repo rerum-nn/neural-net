@@ -4,9 +4,16 @@
 
 namespace neural_net {
 
-BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, Index batch_size,
-                         ShuffleMode mode)
-    : data_(data), labels_(labels), batch_size_(batch_size), mode_(mode) {
+BatchSlicer::BatchSlicer(const Matrix &data, const Matrix &labels, Index batch_size)
+    : data_(data), labels_(labels), batch_size_(batch_size) {
+    assert(data.rows() == labels.rows());
+    assert(batch_size > 0);
+}
+
+BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, Index batch_size)
+    : data_(std::move(data)), labels_(std::move(labels)), batch_size_(batch_size) {
+    assert(data.rows() == labels.rows());
+    assert(batch_size > 0);
 }
 
 BatchSlicer::BatchSlicerIterator BatchSlicer::begin() {
@@ -14,33 +21,26 @@ BatchSlicer::BatchSlicerIterator BatchSlicer::begin() {
 }
 
 BatchSlicer::BatchSlicerIterator BatchSlicer::end() {
-
     return BatchSlicer::BatchSlicerIterator(&data_, &labels_, data_.rows(), batch_size_);
 }
 
-BatchSlicer::BatchSlicer(Matrix &&data, Matrix &&labels, Index batch_size, ShuffleMode mode)
-    : data_(std::move(data)), labels_(std::move(labels)), batch_size_(batch_size), mode_(mode) {
-}
-
-void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, Index batch_size,
-                        ShuffleMode mode) {
+void BatchSlicer::Reset(const Matrix &data, const Matrix &labels, Index batch_size) {
+    assert(data.rows() == labels.rows());
+    assert(batch_size > 0);
     data_ = data;
     labels_ = labels;
     batch_size_ = batch_size;
-    mode_ = mode;
 }
 
-void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, Index batch_size, ShuffleMode mode) {
+void BatchSlicer::Reset(Matrix &&data, Matrix &&labels, Index batch_size) {
+    assert(data.rows() == labels.rows());
+    assert(batch_size >= 1);
     data_ = std::move(data);
     labels_ = std::move(labels);
     batch_size_ = batch_size;
-    mode_ = mode;
 }
 
 void BatchSlicer::Shuffle() {
-    if (mode_ == ShuffleMode::Static) {
-        return;
-    }
     PermutationMatrix perm = Random::Permutation(data_.rows());
     data_ = perm * data_;
     labels_ = perm * labels_;
@@ -49,7 +49,7 @@ void BatchSlicer::Shuffle() {
 BatchSlicer::BatchSlicerIterator::BatchSlicerIterator(const Matrix *data, const Matrix *labels,
                                                       Index idx, Index batch_size)
     : data_(data), labels_(labels), idx_(idx), batch_size_(batch_size) {
-    assert(batch_size != 0);
+    assert(batch_size > 0);
     assert(data != nullptr && labels != nullptr);
     assert(data->rows() == labels->rows() && idx <= data->rows());
 }

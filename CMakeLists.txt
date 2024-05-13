@@ -70,7 +70,6 @@ set(NEURAL_NET_SOURCES
         src/Utils/Timer.cpp
 )
 set(EIGEN_INCLUDE_DIRECTORIES eigen EigenRand)
-set(GOOGLE_TEST googletest/googlemock/include googletest/googletest/include)
 
 include(CMakePackageConfigHelpers)
 
@@ -79,5 +78,6 @@ target_include_directories(NeuralNet PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src" ${
 
 if (NEURAL_NET_BUILD_TESTS)
     add_subdirectory(tests)
+    add_subdirectory(googletest)
     enable_testing()
 endif ()
