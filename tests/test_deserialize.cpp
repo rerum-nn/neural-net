@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
                                             {Metric::CategoricalAccuracy()});
     std::cout << "Loss test: " << test_metrics[0] << " Acc: " << test_metrics[1] << '\n';
 
-    size_t n = 1986;
+    size_t n = 1984;
     Matrix data = x_test.row(n);
     Matrix label = y_test.row(n);
 
