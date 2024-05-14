@@ -5,6 +5,9 @@ cmake-*/
 # Builds
 build-*/
 
+# Presets
+CMakeUserPresets.json
+
 # Prerequisites
 *.d
 
