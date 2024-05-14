@@ -2,6 +2,9 @@
 .idea/
 cmake-*/
 
+# Builds
+build-*/
+
 # Prerequisites
 *.d
 
