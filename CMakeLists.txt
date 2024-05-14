@@ -10,7 +10,7 @@ include(GNUInstallDirs)
 add_library(NeuralNet)
 add_library(NeuralNet::NeuralNet ALIAS NeuralNet)
 
-option(NEURAL_NET_BUILD_TESTS "Build NeuralNet tests" OFF)
+option(NEURAL_NET_BUILD_TESTS "Build NeuralNet tests" ON)
 option(NEURAL_NET_INSTALL "Generate target for installing NeuralNet" ${PROJECT_IS_TOP_LEVEL})
 
 set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
