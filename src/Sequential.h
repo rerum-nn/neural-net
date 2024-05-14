@@ -32,10 +32,10 @@ public:
 
     Matrix Predict(const Matrix& input_data);
 
-    std::vector<double> Fit(const Matrix& input_data, const Matrix& labels,
+    std::vector<float> Fit(const Matrix& input_data, const Matrix& labels,
                             FitParameters fit_parameters);
 
-    std::vector<double> Evaluate(const Matrix& input_data, const Matrix& labels,
+    std::vector<float> Evaluate(const Matrix& input_data, const Matrix& labels,
                                  const LossFunction& loss, std::initializer_list<Metric> metrics);
 
     Sequential& AddLayer(const Linear& layer);

@@ -4,7 +4,6 @@
 #include "Utils/DataManipulate.h"
 #include "Utils/Timer.h"
 
-#include <cassert>
 #include <chrono>
 #include <iostream>
 #include <string>
@@ -24,10 +23,10 @@ Matrix Sequential::Predict(const Matrix& input_data) {
     return iteration.transpose();
 }
 
-std::vector<double> Sequential::Evaluate(const Matrix& input_data, const Matrix& labels,
+std::vector<float> Sequential::Evaluate(const Matrix& input_data, const Matrix& labels,
                                          const LossFunction& loss,
                                          std::initializer_list<Metric> metrics) {
-    std::vector<double> values;
+    std::vector<float> values;
     Matrix output = Predict(input_data);
     values.push_back(loss->Loss(output, labels));
     for (const Metric& metric : metrics) {
@@ -50,7 +49,7 @@ std::vector<Linear>& Sequential::GetLayers() {
     return layers_;
 }
 
-std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labels,
+std::vector<float> Sequential::Fit(const Matrix& input_data, const Matrix& labels,
                                     FitParameters fit_parameters) {
     LossFunction& loss = fit_parameters.loss;
     Optimizer& optimizer = fit_parameters.optimizer;
@@ -59,7 +58,7 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
     size_t batch_size = fit_parameters.batch_size;
     float validate_ratio = fit_parameters.validate_ratio;
 
-    std::vector<double> loss_values;
+    std::vector<float> loss_values;
     loss_values.reserve(max_epoch);
 
     optimizer->InitParameters(layers_);
@@ -97,7 +96,7 @@ std::vector<double> Sequential::Fit(const Matrix& input_data, const Matrix& labe
                   << "] Time: " << timer.GetTimerString() << '\n';
         if (validate_data.size() > 0) {
             Matrix validate_output = Predict(validate_data);
-            double loss_value = loss->Loss(validate_output, validate_labels);
+            float loss_value = loss->Loss(validate_output, validate_labels);
             loss_values.push_back(loss_value);
 
             std::cout << "loss: " << loss_value;
