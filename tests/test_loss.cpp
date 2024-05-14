@@ -16,17 +16,17 @@ using testing::FloatEq;
 class BinaryCrossEntropyTest : public testing::Test {
 protected:
     LossFunction bce_ = neural_net::BinaryCrossEntropy();
-    Matrix present_ = Matrix{{0.2, 0.7, 0.9}};
-    Matrix expected_ = Matrix{{0, 1, 1}};
+    Matrix present_ = Matrix{{0.2, 0.7, 0.9}}.transpose();
+    Matrix expected_ = Matrix{{0, 1, 1}}.transpose();
 };
 
 TEST_F(BinaryCrossEntropyTest, Loss) {
-    ASSERT_THAT(bce_->Loss(present_, expected_), FloatEq(0.2231435328722));
+    ASSERT_THAT(bce_->Loss(present_, expected_), FloatEq(0.22839302));
 }
 
 TEST_F(BinaryCrossEntropyTest, LossGradient) {
     CheckCloseMatrix(bce_->LossGradient(present_, expected_),
-                     Matrix{{1.25, -1.42857146, -1.111111111}});
+                     Matrix{{0.4166666, -0.4761904, -0.37037037}}.transpose());
 }
 
 class CategoricalCrossEntropyTest : public testing::Test {
